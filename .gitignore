@@ -1,0 +1,27 @@
+# Secretos — NUNCA commitear
+.env
+.env.*
+!.env.example
+
+# Node / spine project
+node_modules/
+dist/
+playwright-report/
+blob-report/
+test-results/
+*.tsbuildinfo
+
+# Python / ai-evals
+__pycache__/
+.venv/
+.pytest_cache/
+.ragas_cache/
+*.pyc
+
+# Promptfoo
+.promptfoo/
+
+# SO / editor
+.DS_Store
+.idea/
+*.log
