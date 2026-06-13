@@ -147,21 +147,34 @@ Agrega al test plan una sección `## Los 10 primeros tests` con: el test, la cap
 
 ## ✅ Checklist de dominio
 
-- [ ] Puedo explicar la diferencia entre pirámide y trofeo, y cuándo cada modelo aplica mejor
-- [ ] Puedo definir riesgo como probabilidad × impacto y usarlo para priorizar
-- [ ] Puedo explicar por qué "probar en la capa más baja posible" ahorra dinero
-- [ ] Puedo distinguir smoke, sanity y regression sin dudar
-- [ ] Puedo explicar false positive vs false negative y cuál es más peligroso
-- [ ] Sé qué es un test oracle (y por qué lo mencionaré de nuevo en el Curso 3)
-- [ ] Mi test plan cabe en 1 página y un EM lo entendería sin contexto
+- [x] Puedo explicar la diferencia entre pirámide y trofeo, y cuándo cada modelo aplica mejor:
+  - La prirámide suele usarse donde tener más tests unitarios es más importante, como apps de backend con mucha lógica y compleja. El trofeo es más útil en aplicaciones modernas donde hay una integración entre front y back y los tests de integración cobran más relevancia ya que dan más confianza a la hora de hacer deploys.
+- [x] Puedo definir riesgo como probabilidad × impacto y usarlo para priorizar
+  - El riesco es el impacto multiplicado por la probabilidad, mientras mayor sean los 2 mayor es el riesgo
+- [x] Puedo explicar por qué "probar en la capa más baja posible" ahorra dinero
+  - Mientras más temprano en el ciclo de desarrollo sea detectado un bug menor coste e impacto tendrá, ya que mientras más tarde se detecte más tiempo, recursos y reputación va a costar.
+- [x] Puedo distinguir smoke, sanity y regression sin dudar
+  - Smoke son los signos vitales, sanity son pruebas localizadas, y regression son pruebas para verificar que todo lo demas sigue bien luego de un cambio.
+- [x] Puedo explicar false positive vs false negative y cuál es más peligroso
+  - un False Negative es más peligroso porque indica que no encontramos fallo cuando realmente lo hay, causando problemas a futuro.
+- [x] Sé qué es un test oracle (se profundiza en el Curso 3)
+  - Quien se encarga de decidir si el resultado de un test es correcto.
+- [x] Mi test plan cabe en 1 página y un EM lo entendería sin contexto
+  - El Engineering Manager debe poder revisar un plan rápido, conciso y priorizado por riesgo, por eso debería caber en una página como el propuesto en este ejercicio.
 
 ## 💬 Preguntas de entrevista
 
 1. *"How do you decide what to automate and what to leave to manual/exploratory testing?"*
+  - Automatable is that what is repetible and reproducible
 2. *"Your E2E suite takes 2 hours. The team wants to ship 10 times a day. What do you do?"* (pista: redistribuir capas, no acelerar mágicamente)
+  - We have a los of E2E, we need to re-organize testing strategy to balance loads add tests to ther layers and lower load in e2e
 3. *"What's the difference between verification and validation? Give an example of a product that passed verification but failed validation."*
+  - Verification is doing good the product, Validation is doing the right product, To build a face validator in a pickup app and not realising riders have to take of the helmets each time.
 4. *"Walk me through how you'd design a test strategy for a checkout flow from scratch."*
+  - First, understand how the checkout is built, is it API only? is it UI?, how much security or performance needs? what is our main pain?
+  - In an ideal balanced environment we would balance loads and create unit tests, for logic and security, UI tests for user experience and performance, and E2E tests to validate full UI flow without interruptions.
 5. *"A test passes locally but the feature is broken in production. List every hypothesis you'd investigate."*
+  - ENV variables, feature flags, performance and loading times, environment unstability, blacklisted endpoints, versions are not right in the ENV, someone overrited the code...
 
 ## 🔗 Conexiones
 
