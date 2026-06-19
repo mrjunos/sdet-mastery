@@ -129,20 +129,33 @@ Sin mirar el lab: usando solo curl, completa el flujo **crear carrito → agrega
 
 ## ✅ Checklist de dominio
 
-- [ ] Puedo explicar idempotencia y por qué un retry sobre POST es peligroso
-- [ ] Distingo 401 vs 403 y 400 vs 422 con ejemplos
-- [ ] Sé leer un JWT y sé qué NO debe contener
-- [ ] Puedo usar DevTools → Network para aislar si un bug es de frontend o backend
-- [ ] Puedo copiar un request del browser como cURL y modificarlo
-- [ ] Entiendo que la UI es un cliente más de la API (y las implicaciones para la pirámide)
+- [x] Puedo explicar idempotencia y por qué un retry sobre POST es peligroso
+  - Idempotencia es la característica de una acción de obtener el mismo resultado aunque se realice 1 o 100 veces, como los POST cambian el estado del servidor cada que son enviados, es importante tener mecanísmos de prevención de duplicidad de datos.
+- [x] Distingo 401 vs 403 y 400 vs 422 con ejemplos
+  - La diferencia entre 400 y 422 es que 400 es un error de syntax en la request, y 422 es un error de Lógica de negocio. 
+  - La diferencia entre 401 y 403 es que 401 Es un error de que no se está autenticado y 403 es un error de permiso, está autenticado pero no tiene acceso por permisos.
+- [x] Sé leer un JWT y sé qué NO debe contener
+  - los JWT no deben contener secretos
+  - Está compuesto por header.payload.firma
+- [x] Puedo usar DevTools → Network para aislar si un bug es de frontend o backend
+  - Desde la pestaña de Network puedo ver las peticiones que salieron desde la UI y la data que regresó para identificar si el problema es de data, headers, permisos, UI o Backend.
+- [x] Puedo copiar un request del browser como cURL y modificarlo
+  - Copiar un evento desde la pestaña de network como cURL es simple con un par de clicks
+- [x] Entiendo que la UI es un cliente más de la API (y las implicaciones para la pirámide)
+  - La UI así mismo como el Swagger y la linea de comandos con cURL es un mecanísmo más, una interfaz más para interactuar con la API
 
 ## 💬 Preguntas de entrevista
 
 1. *"What's the difference between 401 and 403? And between 400 and 422?"*
+  - The difference between 401 and 403 is 403 is an authenticated user that has no permissions to the requested resource, and the 401 is not an authenticated user.
 2. *"What does idempotency mean and why does it matter for API design and testing?"*
+  - Idempotency is the characteristic of an action that affects the state of a server the same way no matter if it's executed 1 or 100 times, it's important because acumulative operations like POST change the state of the server on each call, meaning we have to prevent the users to trigger multiple POST calls by accident.
 3. *"A user reports 'the page is broken'. Walk me through your triage using DevTools."*
+  - Open the devTools, go to Network, filter by fetch/XHR to hide the noise and see the request the UI performs, clean results, and load the site again, that way we can check responses from the UI and verify the site is not loading due to the server not answering, answering the wrong data, or is a rendering (UI) issue.
 4. *"What's inside a JWT? Can the client tamper with it? Can it read it?"*
+  - A JWT is a Json Web Token that acts as a key to acces a content, is the modern way of auth web apps, it is not enctripted but stores a token that will traven in the header of the requests that need authentication. in the JWT we send the header.payload.token info.
 5. *"Why would you test business logic at the API layer instead of through the UI?"*
+  - API tests are way faster than UI tests, meaning we can test more combinations of business logic and more edge cases using less resources.
 
 ## 🔗 Conexiones
 
