@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+
+<title>Spec 01 · Módulo 2 — Evaluar el RAG con RAGAS · SDET Mastery</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --bg-soft: #161922;
+  --bg-card: #1b1f2a;
+  --border: #262b38;
+  --text: #e7e9ee;
+  --muted: #9aa3b2;
+  --accent: #5eead4;
+  --accent-2: #818cf8;
+  --warn: #fbbf24;
+  --code-bg: #11141c;
+  --max: 880px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 80% -10%, #1d2333 0%, var(--bg) 55%);
+  color: var(--text);
+  font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  backdrop-filter: blur(10px);
+  background: rgba(15,17,23,.72);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .inner {
+  max-width: var(--max); margin: 0 auto; padding: 12px 24px;
+  display: flex; align-items: center; gap: 14px; justify-content: space-between;
+}
+.topbar a.home { color: var(--muted); font-weight: 600; font-size: 14px; }
+.topbar .crumb { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #0b0d12; font-weight: 700; font-size: 12px; letter-spacing: .2px;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 40px 24px 120px; }
+
+article h1, article h2, article h3, article h4 { line-height: 1.25; }
+article h1 {
+  font-size: 2rem; margin: .2em 0 .6em;
+  background: linear-gradient(90deg, #fff, #b9c2d4);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+article h2 {
+  margin-top: 2.4em; padding-bottom: .35em; font-size: 1.45rem;
+  border-bottom: 1px solid var(--border);
+}
+article h3 { margin-top: 1.8em; font-size: 1.15rem; color: #f3f5f9; }
+article p { margin: .9em 0; }
+
+blockquote {
+  margin: 1.4em 0; padding: 14px 18px;
+  border-left: 4px solid var(--accent);
+  background: linear-gradient(90deg, rgba(94,234,212,.10), transparent);
+  border-radius: 0 10px 10px 0; color: #dfe4ee;
+}
+blockquote p { margin: .3em 0; }
+
+code {
+  font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+  font-size: .9em;
+}
+:not(pre) > code {
+  background: var(--code-bg); border: 1px solid var(--border);
+  padding: .12em .4em; border-radius: 6px; color: #f0b3a0;
+}
+pre {
+  background: var(--code-bg) !important; border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; overflow: auto; margin: 1.2em 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+pre code { background: none; border: 0; padding: 0; color: #e7e9ee; }
+
+table {
+  border-collapse: collapse; width: 100%; margin: 1.4em 0;
+  font-size: .94rem; overflow: hidden; border-radius: 10px;
+}
+th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+thead th { background: var(--bg-card); color: #fff; font-weight: 700; }
+tbody tr:nth-child(odd) { background: rgba(255,255,255,.015); }
+tbody tr:hover { background: rgba(129,140,248,.07); }
+
+ul, ol { padding-left: 1.4em; }
+li { margin: .35em 0; }
+
+/* Task lists */
+li:has(> input[type=checkbox]) { list-style: none; margin-left: -1.2em; }
+input[type=checkbox] { width: 16px; height: 16px; margin-right: 8px; accent-color: var(--accent); vertical-align: -2px; }
+li:has(> input[type=checkbox]:checked) { color: var(--muted); }
+
+.mermaid {
+  background: var(--bg-soft); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px; margin: 1.4em 0; text-align: center;
+  overflow-x: auto;
+}
+
+hr { border: 0; border-top: 1px solid var(--border); margin: 2.4em 0; }
+
+/* ---------- index ---------- */
+.hero { padding: 48px 0 10px; }
+.hero h1 { font-size: 2.6rem; margin: 0 0 .2em; }
+.hero p { color: var(--muted); font-size: 1.05rem; max-width: 620px; }
+.course { margin: 42px 0; }
+.course > h2 {
+  font-size: 1.05rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--muted); margin-bottom: 16px;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.card {
+  display: block; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 18px; transition: .18s ease;
+  position: relative; overflow: hidden;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--accent-2); text-decoration: none; box-shadow: 0 14px 34px rgba(0,0,0,.35); }
+.card .num { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
+.card .t { display: block; margin-top: 6px; color: #fff; font-weight: 600; line-height: 1.35; }
+.footer { color: var(--muted); font-size: 13px; text-align: center; margin-top: 60px; }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="home" href="index.html">← SDET Mastery</a>
+  <span class="crumb">Curso 3 · Especializaciones (LLM)</span>
+</div></div>
+<div class="wrap">
+  <article id="content"></article>
+</div>
+<script type="text/markdown" id="src"># Spec 01 · Módulo 2 — Evaluar el RAG con RAGAS
+
+> **Resultado:** una suite de evaluación que separa los fallos de retrieval de los de generación usando las métricas RAGAS — y un veredicto cuantificado sobre TU RAG del módulo 1.
+
+## 🗺️ Mapa visual
+
+```mermaid
+flowchart TB
+    subgraph "Las 4 métricas y QUÉ máquina evalúa cada una"
+        subgraph RET["RETRIEVAL (el buscador)"]
+            CP["Context Precision<br/>de lo recuperado,<br/>¿cuánto es RELEVANTE?<br/>(ruido en el contexto)"]
+            CR["Context Recall<br/>de lo NECESARIO para responder,<br/>¿cuánto fue recuperado?<br/>(faltó información)"]
+        end
+        subgraph GEN["GENERACIÓN (el redactor)"]
+            F["Faithfulness<br/>¿cada afirmación de la respuesta<br/>está SOPORTADA por el contexto?<br/>(alucinación)"]
+            AR["Answer Relevancy<br/>¿la respuesta responde<br/>LA PREGUNTA?<br/>(divagación)"]
+        end
+    end
+```
+
+```mermaid
+flowchart LR
+    subgraph "Diagnóstico por patrón de métricas"
+        P1["CR baja + F alta<br/>→ el retrieval no trae lo necesario:<br/>arregla chunking/k/embeddings"]
+        P2["CR alta + F baja<br/>→ tiene la info y alucina igual:<br/>arregla prompt/grounding"]
+        P3["CP baja + todo lo demás ok<br/>→ funciona pero con ruido caro:<br/>baja k o añade re-ranking"]
+        P4["AR baja<br/>→ responde otra cosa:<br/>revisa el prompt de generación"]
+    end
+```
+
+## 📖 Concepto
+
+### El insight de RAGAS: una métrica por componente
+
+Evaluar un RAG con "¿la respuesta es buena?" es como debuggear un pipeline de CI mirando solo el verde/rojo final. [RAGAS](https://docs.ragas.io) descompone la calidad en métricas que apuntan cada una a UNA pieza del pipeline (mapa de arriba) — y eso convierte la evaluación en **diagnóstico accionable**: el segundo diagrama es literalmente tu árbol de decisión de debugging.
+
+¿Cómo calcula RAGAS estas métricas si la corrección semántica no se puede assertear? Usando **un LLM como evaluador**: para faithfulness, por ejemplo, descompone la respuesta en afirmaciones individuales y le pregunta a un modelo, afirmación por afirmación, si el contexto la soporta. Estás usando LLM-as-a-judge sin haberlo estudiado formalmente — spec-02 abre la caja, examina los sesgos del juez y cuándo confiar en él. Por hoy, la regla práctica: **las métricas de RAGAS son señales direccionales robustas, no verdades al tercer decimal**.
+
+### El dataset de evaluación: la mitad del trabajo
+
+Cada caso necesita: `question`, `answer` (la del RAG), `contexts` (los chunks que TU RAG expuso — por eso los devolvías) y, para context recall, una `ground_truth` (respuesta de referencia escrita por ti). Las reglas de diseño que ya conoces aplican:
+
+- **Clases de equivalencia** (C1-M7): preguntas directas, multi-documento, sin-respuesta, ambiguas. Cada clase ejercita una pieza distinta del pipeline.
+- **Los casos sin-respuesta son oro**: un RAG que responde el 100 % de las preguntas es un RAG que alucina — el "no encuentro esa información" correcto se evalúa explícitamente.
+- **El dataset evoluciona**: cada bug real de producción se convierte en caso del dataset (regression testing, C1-M1 — mismo principio, nuevo artefacto).
+
+## 🔨 Lab guiado — La suite de evaluación
+
+**Costo aproximado: ~$2-4 (RAGAS hace varias llamadas de juez por caso).**
+
+**Paso 1 — Instala y configura RAGAS con Claude como juez.**
+
+```bash
+cd ~/Documents/sdet-mastery/labs/ai-evals
+uv add ragas langchain-anthropic datasets
+```
+
+RAGAS usa LangChain para hablar con el LLM juez. Configúralo con Claude en `spec01/evals/conftest_ragas.py`:
+
+```python
+from ragas.llms import LangchainLLMWrapper
+from ragas.embeddings import LangchainEmbeddingsWrapper
+from langchain_anthropic import ChatAnthropic
+from langchain_community.embeddings import HuggingFaceEmbeddings
+
+judge_llm = LangchainLLMWrapper(ChatAnthropic(model="claude-opus-4-8", max_tokens=2000))
+judge_embeddings = LangchainEmbeddingsWrapper(HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2"))
+```
+
+(Si las versiones actuales de ragas/langchain difieren en imports, consulta docs.ragas.io — los nombres de los wrappers han cambiado entre versiones; parte del trabajo real de un SDET de IA es navegar este ecosistema joven.)
+
+**Paso 2 — El golden dataset.** Convierte tu exploración del módulo 1 en `spec01/evals/golden_dataset.py`: 12 casos mínimo — 5 directos, 3 multi-documento, 3 sin-respuesta, 1 ambiguo — cada uno con `question`, `ground_truth` (escrita por TI: tú eres el experto de tus docs) y la clase como tag.
+
+**Paso 3 — El runner de evaluación.** Crea `spec01/evals/run_eval.py`: para cada caso, ejecuta tu RAG (`responder()` del módulo 1), recoge `answer` y `contexts`, y evalúa:
+
+```python
+from ragas import evaluate, EvaluationDataset
+from ragas.metrics import ContextPrecision, ContextRecall, Faithfulness, AnswerRelevancy
+
+# construir los registros con question/answer/contexts/ground_truth por caso...
+dataset = EvaluationDataset.from_list(registros)
+resultado = evaluate(
+    dataset,
+    metrics=[ContextPrecision(), ContextRecall(), Faithfulness(), AnswerRelevancy()],
+    llm=judge_llm,
+    embeddings=judge_embeddings,
+)
+df = resultado.to_pandas()
+print(df[["user_input", "context_precision", "context_recall", "faithfulness", "answer_relevancy"]])
+df.to_csv("spec01/evals/resultados.csv")
+```
+
+**Paso 4 — Diagnóstico con el árbol de decisión.** Analiza tus resultados POR CLASE de caso (agrupa con pandas). Para cada caso con métricas bajas, aplica el segundo diagrama del mapa: ¿es retrieval o generación? Verifica tu diagnóstico mirando los chunks (los tienes). Documenta en `spec01/evals/diagnostico.md` los 3 peores casos con su causa raíz y el fix propuesto. **Este documento es el deliverable estrella del spec** — es exactamente el análisis que harías en un trabajo real.
+
+**Paso 5 — Aplica UN fix y mide.** Elige el fix de mayor impacto de tu diagnóstico (¿subir k? ¿mejorar chunking? ¿endurecer grounding?), aplícalo y re-corre la suite. Tabla antes/después en `diagnostico.md`. Si mejoró lo que apuntaste sin degradar el resto: diagnóstico validado. Si no — también es un resultado, documenta por qué.
+
+**Paso 6 — Umbral como gate.** Convierte la suite en test pytest con umbrales por clase: faithfulness media ≥ 0.85 global, y para la clase sin-respuesta, el 100 % debe contener "No encuentro esa información". Este test es el embrión del eval-en-CI que spec-02 industrializa.
+
+**Paso 7 — Commit** (`C3-S1-M2: suite RAGAS + diagnóstico + fix medido`).
+
+## 🎯 Reto
+
+**El caso adversarial del retrieval.** Agrega a tus docs un archivo `deprecated-notes.md` con información OBSOLETA que contradiga a `ci-notes.md` (ej.: "la suite corre solo los viernes"). Re-indexa y pregunta sobre ese tema. ¿Qué chunks gana el retrieval? ¿Qué responde el RAG ante contexto contradictorio? Diseña y documenta la mitigación (pistas: metadata de frescura en los chunks, instrucción de resolución de conflictos en el prompt, o higiene del corpus — ¿cuál elegirías y por qué?). Los corpus reales SIEMPRE tienen contradicciones; las entrevistas de RAG senior siempre lo preguntan.
+
+## ✅ Checklist de dominio
+
+- [ ] Puedo explicar las 4 métricas RAGAS y qué componente evalúa cada una
+- [ ] Uso el árbol de diagnóstico: patrón de métricas → componente culpable → fix
+- [ ] Mi golden dataset tiene clases de equivalencia deliberadas, incluida sin-respuesta
+- [ ] Sé que RAGAS usa un LLM como juez y trato sus números como señal direccional
+- [ ] Cerré el ciclo completo: evaluar → diagnosticar → arreglar → re-medir
+- [ ] Tengo umbrales por clase convertidos en tests ejecutables
+
+## 💬 Preguntas de entrevista
+
+1. *"How would you evaluate a RAG system? Which metrics and why?"* (las 4, CON el mapeo a componentes)
+2. *"Context recall is high but faithfulness is low. Where's the bug?"* (generación: tiene la info y alucina — prompt/grounding)
+3. *"How do you build an evaluation dataset for a RAG over internal docs?"* (clases, ground truth experta, casos sin-respuesta, evolución con bugs reales)
+4. *"The PM says 'the chatbot feels better this sprint'. How do you replace 'feels' with numbers?"*
+5. *"What happens when your knowledge base contains contradictory documents?"* (tu reto)
+
+## 🔗 Conexiones
+
+- **Refuerza:** el RAG del [módulo 1](modulo-01-construir-rag.md) (exponer chunks fue lo que hizo posible evaluar); el golden dataset de [spec-00-M2](../spec-00-fundamentos-llm/modulo-02-structured-output-no-determinismo.md) sube de nivel; el ciclo diagnóstico→fix→re-medición es el mismo de la flakiness ([C2-M6](../../curso-2-profundizando/modulo-06-cicd-avanzado.md)).
+- **Se reutiliza en:** spec-02 abre la caja del LLM-juez que RAGAS usó hoy y mete estos evals en CI; spec-05 añade la dimensión que faltó (¿cuánto TARDA y CUESTA cada pregunta del RAG?); el patrón "métrica por componente del pipeline" reaparece en spec-03 para agentes (¿falló el plan, la tool o la síntesis?).
+</script>
+<script>
+mermaid.initialize({ startOnLoad: false, theme: 'dark',
+  themeVariables: { fontFamily: 'inherit', primaryColor: '#1b1f2a',
+    primaryBorderColor: '#5eead4', lineColor: '#818cf8', primaryTextColor: '#e7e9ee' } });
+
+marked.setOptions({ gfm: true, breaks: false });
+const raw = document.getElementById('src').textContent;
+
+// Render markdown, but extract mermaid fences first so marked doesn't escape them.
+const blocks = [];
+const pre = raw.replace(/```mermaid\n([\s\S]*?)```/g, (m, code) => {
+  blocks.push(code); return `\n@@MERMAID_${blocks.length - 1}@@\n`;
+});
+
+let htmlOut = marked.parse(pre);
+htmlOut = htmlOut.replace(/<p>@@MERMAID_(\d+)@@<\/p>/g,
+  (m, i) => `<div class="mermaid">${blocks[+i].replace(/</g,'&lt;')}</div>`);
+
+const el = document.getElementById('content');
+el.innerHTML = htmlOut;
+
+// syntax highlight non-mermaid code
+el.querySelectorAll('pre code').forEach(b => { try { hljs.highlightElement(b); } catch(e){} });
+mermaid.run({ querySelector: '.mermaid' });
+</script>
+</body>
+</html>

@@ -25,3 +25,6 @@ __pycache__/
 .DS_Store
 .idea/
 *.log
+
+# Clon del SUT (Toolshop) — no es parte de este repo
+practice-software-testing/

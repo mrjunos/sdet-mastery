@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SDET Mastery · Módulos</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --bg-soft: #161922;
+  --bg-card: #1b1f2a;
+  --border: #262b38;
+  --text: #e7e9ee;
+  --muted: #9aa3b2;
+  --accent: #5eead4;
+  --accent-2: #818cf8;
+  --warn: #fbbf24;
+  --code-bg: #11141c;
+  --max: 880px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 80% -10%, #1d2333 0%, var(--bg) 55%);
+  color: var(--text);
+  font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  backdrop-filter: blur(10px);
+  background: rgba(15,17,23,.72);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .inner {
+  max-width: var(--max); margin: 0 auto; padding: 12px 24px;
+  display: flex; align-items: center; gap: 14px; justify-content: space-between;
+}
+.topbar a.home { color: var(--muted); font-weight: 600; font-size: 14px; }
+.topbar .crumb { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #0b0d12; font-weight: 700; font-size: 12px; letter-spacing: .2px;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 40px 24px 120px; }
+
+article h1, article h2, article h3, article h4 { line-height: 1.25; }
+article h1 {
+  font-size: 2rem; margin: .2em 0 .6em;
+  background: linear-gradient(90deg, #fff, #b9c2d4);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+article h2 {
+  margin-top: 2.4em; padding-bottom: .35em; font-size: 1.45rem;
+  border-bottom: 1px solid var(--border);
+}
+article h3 { margin-top: 1.8em; font-size: 1.15rem; color: #f3f5f9; }
+article p { margin: .9em 0; }
+
+blockquote {
+  margin: 1.4em 0; padding: 14px 18px;
+  border-left: 4px solid var(--accent);
+  background: linear-gradient(90deg, rgba(94,234,212,.10), transparent);
+  border-radius: 0 10px 10px 0; color: #dfe4ee;
+}
+blockquote p { margin: .3em 0; }
+
+code {
+  font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+  font-size: .9em;
+}
+:not(pre) > code {
+  background: var(--code-bg); border: 1px solid var(--border);
+  padding: .12em .4em; border-radius: 6px; color: #f0b3a0;
+}
+pre {
+  background: var(--code-bg) !important; border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; overflow: auto; margin: 1.2em 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+pre code { background: none; border: 0; padding: 0; color: #e7e9ee; }
+
+table {
+  border-collapse: collapse; width: 100%; margin: 1.4em 0;
+  font-size: .94rem; overflow: hidden; border-radius: 10px;
+}
+th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+thead th { background: var(--bg-card); color: #fff; font-weight: 700; }
+tbody tr:nth-child(odd) { background: rgba(255,255,255,.015); }
+tbody tr:hover { background: rgba(129,140,248,.07); }
+
+ul, ol { padding-left: 1.4em; }
+li { margin: .35em 0; }
+
+/* Task lists */
+li:has(> input[type=checkbox]) { list-style: none; margin-left: -1.2em; }
+input[type=checkbox] { width: 16px; height: 16px; margin-right: 8px; accent-color: var(--accent); vertical-align: -2px; }
+li:has(> input[type=checkbox]:checked) { color: var(--muted); }
+
+.mermaid {
+  background: var(--bg-soft); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px; margin: 1.4em 0; text-align: center;
+  overflow-x: auto;
+}
+
+hr { border: 0; border-top: 1px solid var(--border); margin: 2.4em 0; }
+
+/* ---------- index ---------- */
+.hero { padding: 48px 0 10px; }
+.hero h1 { font-size: 2.6rem; margin: 0 0 .2em; }
+.hero p { color: var(--muted); font-size: 1.05rem; max-width: 620px; }
+.course { margin: 42px 0; }
+.course > h2 {
+  font-size: 1.05rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--muted); margin-bottom: 16px;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.card {
+  display: block; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 18px; transition: .18s ease;
+  position: relative; overflow: hidden;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--accent-2); text-decoration: none; box-shadow: 0 14px 34px rgba(0,0,0,.35); }
+.card .num { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
+.card .t { display: block; margin-top: 6px; color: #fff; font-weight: 600; line-height: 1.35; }
+.footer { color: var(--muted); font-size: 13px; text-align: center; margin-top: 60px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="badge">SDET MASTERY</span>
+    <h1>Programa de estudio SDET Senior</h1>
+    <p>Versión HTML de los 29 módulos del programa: fundamentos, profundización
+    y especializaciones en testing de sistemas con LLM. Diagramas, código y checklists
+    incluidos.</p>
+  </header>
+  <section class="course"><h2>🎤 Especial · Preparación de entrevistas</h2><div class="grid"><a class="card" href="especial__entrevista-directora-qa-latam.html"><span class="num">Módulo especial</span><span class="t">Entrevista: Directora de QA LATAM — repaso condensado + banco de preguntas (QA AI Lead)</span></a></div></section><section class="course"><h2>Curso 1 · Fundamentos</h2><div class="grid"><a class="card" href="curso-1-fundamentos__modulo-01-mentalidad-de-testing.html"><span class="num">Módulo 1</span><span class="t">Módulo 1 — Mentalidad de testing</span></a><a class="card" href="curso-1-fundamentos__modulo-02-caja-de-herramientas.html"><span class="num">Módulo 2</span><span class="t">Módulo 2 — Caja de herramientas técnica</span></a><a class="card" href="curso-1-fundamentos__modulo-03-typescript-para-testers.html"><span class="num">Módulo 3</span><span class="t">Módulo 3 — TypeScript para testers</span></a><a class="card" href="curso-1-fundamentos__modulo-04-api-testing.html"><span class="num">Módulo 4</span><span class="t">Módulo 4 — API testing primero</span></a><a class="card" href="curso-1-fundamentos__modulo-05-ui-testing-playwright.html"><span class="num">Módulo 5</span><span class="t">Módulo 5 — UI testing con Playwright</span></a><a class="card" href="curso-1-fundamentos__modulo-06-patrones-de-tests.html"><span class="num">Módulo 6</span><span class="t">Módulo 6 — Patrones de diseño de tests</span></a><a class="card" href="curso-1-fundamentos__modulo-07-diseno-de-casos.html"><span class="num">Módulo 7</span><span class="t">Módulo 7 — Diseño de casos y testing exploratorio</span></a><a class="card" href="curso-1-fundamentos__modulo-08-ci-basico.html"><span class="num">Módulo 8</span><span class="t">Módulo 8 — CI básico</span></a></div></section><section class="course"><h2>Curso 2 · Profundizando</h2><div class="grid"><a class="card" href="curso-2-profundizando__modulo-01-arquitectura-frameworks.html"><span class="num">Módulo 1</span><span class="t">Módulo 1 — Arquitectura de frameworks</span></a><a class="card" href="curso-2-profundizando__modulo-02-contract-testing.html"><span class="num">Módulo 2</span><span class="t">Módulo 2 — Contract testing</span></a><a class="card" href="curso-2-profundizando__modulo-03-test-doubles.html"><span class="num">Módulo 3</span><span class="t">Módulo 3 — Test doubles e integración</span></a><a class="card" href="curso-2-profundizando__modulo-04-visual-a11y.html"><span class="num">Módulo 4</span><span class="t">Módulo 4 — Visual regression + accesibilidad</span></a><a class="card" href="curso-2-profundizando__modulo-05-performance-k6.html"><span class="num">Módulo 5</span><span class="t">Módulo 5 — Performance testing con k6</span></a><a class="card" href="curso-2-profundizando__modulo-06-cicd-avanzado.html"><span class="num">Módulo 6</span><span class="t">Módulo 6 — CI/CD avanzado</span></a><a class="card" href="curso-2-profundizando__modulo-07-observabilidad.html"><span class="num">Módulo 7</span><span class="t">Módulo 7 — Observabilidad para SDETs</span></a><a class="card" href="curso-2-profundizando__modulo-08-estrategia-liderazgo.html"><span class="num">Módulo 8</span><span class="t">Módulo 8 — Estrategia y liderazgo</span></a></div></section><section class="course"><h2>Curso 3 · Especializaciones (LLM)</h2><div class="grid"><a class="card" href="curso-3-especializaciones__spec-00-fundamentos-llm__modulo-01-llm-y-api.html"><span class="num">Módulo 1 · S00</span><span class="t">Spec 00 · Módulo 1 — El modelo y la API</span></a><a class="card" href="curso-3-especializaciones__spec-00-fundamentos-llm__modulo-02-structured-output-no-determinismo.html"><span class="num">Módulo 2 · S00</span><span class="t">Spec 00 · Módulo 2 — Structured output, tool use y el experimento del no-determinismo</span></a><a class="card" href="curso-3-especializaciones__spec-01-rag-y-contexto__modulo-01-construir-rag.html"><span class="num">Módulo 1 · S01</span><span class="t">Spec 01 · Módulo 1 — Construir el RAG (para poder romperlo)</span></a><a class="card" href="curso-3-especializaciones__spec-01-rag-y-contexto__modulo-02-evaluar-rag.html"><span class="num">Módulo 2 · S01</span><span class="t">Spec 01 · Módulo 2 — Evaluar el RAG con RAGAS</span></a><a class="card" href="curso-3-especializaciones__spec-02-llm-as-a-judge__modulo-01-escalera-de-evals.html"><span class="num">Módulo 1 · S02</span><span class="t">Spec 02 · Módulo 1 — La escalera de evals + promptfoo</span></a><a class="card" href="curso-3-especializaciones__spec-02-llm-as-a-judge__modulo-02-juez-y-ci.html"><span class="num">Módulo 2 · S02</span><span class="t">Spec 02 · Módulo 2 — El juez bajo juicio + evals en CI</span></a><a class="card" href="curso-3-especializaciones__spec-03-agentic-flows__modulo-01-anatomia-agente.html"><span class="num">Módulo 1 · S03</span><span class="t">Spec 03 · Módulo 1 — Anatomía de un agente</span></a><a class="card" href="curso-3-especializaciones__spec-03-agentic-flows__modulo-02-agente-qa.html"><span class="num">Módulo 2 · S03</span><span class="t">Spec 03 · Módulo 2 — El agente QA: tu framework como herramienta</span></a><a class="card" href="curso-3-especializaciones__spec-03-agentic-flows__modulo-03-trajectory-evals.html"><span class="num">Módulo 3 · S03</span><span class="t">Spec 03 · Módulo 3 — Trajectory evals</span></a><a class="card" href="curso-3-especializaciones__spec-04-red-teaming-guardrails__modulo-01-superficie-de-ataque.html"><span class="num">Módulo 1 · S04</span><span class="t">Spec 04 · Módulo 1 — La superficie de ataque + red-teaming automatizado</span></a><a class="card" href="curso-3-especializaciones__spec-04-red-teaming-guardrails__modulo-02-guardrails.html"><span class="num">Módulo 2 · S04</span><span class="t">Spec 04 · Módulo 2 — Guardrails en capas</span></a><a class="card" href="curso-3-especializaciones__spec-05-performance-observability-llm__modulo-01-performance-llm.html"><span class="num">Módulo 1 · S05</span><span class="t">Spec 05 · Módulo 1 — Performance de LLMs</span></a><a class="card" href="curso-3-especializaciones__spec-05-performance-observability-llm__modulo-02-observabilidad-langfuse.html"><span class="num">Módulo 2 · S05</span><span class="t">Spec 05 · Módulo 2 — Observabilidad con Langfuse + evals en producción</span></a></div></section>
+  <div class="footer">Generado desde los .md del repo · sdet-mastery</div>
+</div>
+</body>
+</html>

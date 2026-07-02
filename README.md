@@ -6,13 +6,25 @@ Programa de estudio completo para dominar todo lo que un **SDET / Test Automatio
 
 ---
 
+## Cómo leer el contenido
+
+Todo el contenido vive como **HTML** en [`html-export/`](html-export/). Para estudiarlo:
+
+```bash
+open html-export/index.html   # macOS — abre el índice con los 30 módulos
+```
+
+Requiere internet al ver (diagramas y resaltado se renderizan client-side vía CDN). Las fuentes `.md` originales quedaron en el historial de git (hasta `5ca3cb3`).
+
 ## Los 3 cursos
 
 | Curso | Qué dominas al terminar | Duración (10 h/sem) |
 |-------|------------------------|---------------------|
-| [**Curso 1 — Fundamentos**](curso-1-fundamentos/README.md) | Mentalidad de testing, HTTP, TypeScript, API + UI testing con Playwright, patrones, diseño de casos, CI básico | ~8 semanas |
-| [**Curso 2 — Profundizando**](curso-2-profundizando/README.md) | Arquitectura de frameworks, contract testing, test doubles, visual/a11y, performance con k6, CI/CD avanzado, observabilidad, estrategia y liderazgo | ~9 semanas |
-| [**Curso 3 — Especializaciones**](curso-3-especializaciones/README.md) | Testing de sistemas con LLMs: RAG, LLM-as-a-judge, agentic flows & tool calling, red-teaming & guardrails, performance & observabilidad LLM. **Estudiables por separado.** | ~10 semanas (todas) |
+| **Curso 1 — Fundamentos** | Mentalidad de testing, HTTP, TypeScript, API + UI testing con Playwright, patrones, diseño de casos, CI básico | ~8 semanas |
+| **Curso 2 — Profundizando** | Arquitectura de frameworks, contract testing, test doubles, visual/a11y, performance con k6, CI/CD avanzado, observabilidad, estrategia y liderazgo | ~9 semanas |
+| **Curso 3 — Especializaciones** | Testing de sistemas con LLMs: RAG, LLM-as-a-judge, agentic flows & tool calling, red-teaming & guardrails, performance & observabilidad LLM. **Estudiables por separado.** | ~10 semanas (todas) |
+
+Además hay un **módulo especial de preparación de entrevistas** (repaso condensado de toda la maestría + banco de preguntas con respuesta oculta), enlazado al inicio del índice.
 
 ## Cómo estudiar este programa
 
@@ -64,10 +76,7 @@ Los labs funcionan con ambas vías; cada lab indica la URL base con una variable
 ```
 sdet-mastery/
 ├── README.md                    ← estás aquí
-├── PROGRAMA.md                  ← syllabus completo + grafo de dependencias + plan semanal
-├── curso-1-fundamentos/         ← 8 módulos + checkpoint
-├── curso-2-profundizando/       ← 8 módulos + checkpoint
-├── curso-3-especializaciones/   ← spec-00 a spec-05 + capstone
+├── html-export/                 ← TODO el contenido (30 módulos HTML + index)
 └── labs/
     ├── toolshop-tests/          ← spine project (TypeScript + Playwright)
     └── ai-evals/                ← labs del Curso 3 (Python + uv)
@@ -75,6 +84,6 @@ sdet-mastery/
 
 ## Por dónde empezar
 
-1. Lee [`PROGRAMA.md`](PROGRAMA.md) (15 min) — el mapa completo.
+1. Abre `html-export/index.html` — el mapa completo.
 2. Haz el setup inicial de arriba (30 min).
-3. Abre [Curso 1 — Módulo 1](curso-1-fundamentos/modulo-01-mentalidad-de-testing.md) y empieza.
+3. Abre el **Curso 1 — Módulo 1** desde el índice y empieza.

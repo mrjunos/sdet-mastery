@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="es">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+
+<title>Módulo 8 — CI básico · SDET Mastery</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --bg-soft: #161922;
+  --bg-card: #1b1f2a;
+  --border: #262b38;
+  --text: #e7e9ee;
+  --muted: #9aa3b2;
+  --accent: #5eead4;
+  --accent-2: #818cf8;
+  --warn: #fbbf24;
+  --code-bg: #11141c;
+  --max: 880px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 80% -10%, #1d2333 0%, var(--bg) 55%);
+  color: var(--text);
+  font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  backdrop-filter: blur(10px);
+  background: rgba(15,17,23,.72);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .inner {
+  max-width: var(--max); margin: 0 auto; padding: 12px 24px;
+  display: flex; align-items: center; gap: 14px; justify-content: space-between;
+}
+.topbar a.home { color: var(--muted); font-weight: 600; font-size: 14px; }
+.topbar .crumb { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #0b0d12; font-weight: 700; font-size: 12px; letter-spacing: .2px;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 40px 24px 120px; }
+
+article h1, article h2, article h3, article h4 { line-height: 1.25; }
+article h1 {
+  font-size: 2rem; margin: .2em 0 .6em;
+  background: linear-gradient(90deg, #fff, #b9c2d4);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+article h2 {
+  margin-top: 2.4em; padding-bottom: .35em; font-size: 1.45rem;
+  border-bottom: 1px solid var(--border);
+}
+article h3 { margin-top: 1.8em; font-size: 1.15rem; color: #f3f5f9; }
+article p { margin: .9em 0; }
+
+blockquote {
+  margin: 1.4em 0; padding: 14px 18px;
+  border-left: 4px solid var(--accent);
+  background: linear-gradient(90deg, rgba(94,234,212,.10), transparent);
+  border-radius: 0 10px 10px 0; color: #dfe4ee;
+}
+blockquote p { margin: .3em 0; }
+
+code {
+  font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+  font-size: .9em;
+}
+:not(pre) > code {
+  background: var(--code-bg); border: 1px solid var(--border);
+  padding: .12em .4em; border-radius: 6px; color: #f0b3a0;
+}
+pre {
+  background: var(--code-bg) !important; border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; overflow: auto; margin: 1.2em 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+pre code { background: none; border: 0; padding: 0; color: #e7e9ee; }
+
+table {
+  border-collapse: collapse; width: 100%; margin: 1.4em 0;
+  font-size: .94rem; overflow: hidden; border-radius: 10px;
+}
+th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+thead th { background: var(--bg-card); color: #fff; font-weight: 700; }
+tbody tr:nth-child(odd) { background: rgba(255,255,255,.015); }
+tbody tr:hover { background: rgba(129,140,248,.07); }
+
+ul, ol { padding-left: 1.4em; }
+li { margin: .35em 0; }
+
+/* Task lists */
+li:has(> input[type=checkbox]) { list-style: none; margin-left: -1.2em; }
+input[type=checkbox] { width: 16px; height: 16px; margin-right: 8px; accent-color: var(--accent); vertical-align: -2px; }
+li:has(> input[type=checkbox]:checked) { color: var(--muted); }
+
+.mermaid {
+  background: var(--bg-soft); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px; margin: 1.4em 0; text-align: center;
+  overflow-x: auto;
+}
+
+hr { border: 0; border-top: 1px solid var(--border); margin: 2.4em 0; }
+
+/* ---------- index ---------- */
+.hero { padding: 48px 0 10px; }
+.hero h1 { font-size: 2.6rem; margin: 0 0 .2em; }
+.hero p { color: var(--muted); font-size: 1.05rem; max-width: 620px; }
+.course { margin: 42px 0; }
+.course > h2 {
+  font-size: 1.05rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--muted); margin-bottom: 16px;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.card {
+  display: block; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 18px; transition: .18s ease;
+  position: relative; overflow: hidden;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--accent-2); text-decoration: none; box-shadow: 0 14px 34px rgba(0,0,0,.35); }
+.card .num { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
+.card .t { display: block; margin-top: 6px; color: #fff; font-weight: 600; line-height: 1.35; }
+.footer { color: var(--muted); font-size: 13px; text-align: center; margin-top: 60px; }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="home" href="index.html">← SDET Mastery</a>
+  <span class="crumb">Curso 1 · Fundamentos</span>
+</div></div>
+<div class="wrap">
+  <article id="content"></article>
+</div>
+<script type="text/markdown" id="src"># Módulo 8 — CI básico
+
+> **Resultado:** tu suite completa (API + UI) corre automáticamente en GitHub Actions en cada push, con reporte HTML y traces descargables. El spine deja de depender de tu laptop.
+
+## 🗺️ Mapa visual
+
+```mermaid
+flowchart LR
+    DEV["git push /<br/>Pull Request"] --> GHA["GitHub Actions<br/>runner ubuntu-latest"]
+    subgraph GHA_steps["El workflow"]
+        S1["checkout del repo"] --> S2["setup Node 22<br/>+ cache de npm"] --> S3["npm ci<br/>(instala EXACTO el lockfile)"] --> S4["levantar el SUT<br/>(Toolshop en Docker)"] --> S5["npx playwright test"] --> S6["subir artifacts:<br/>reporte HTML + traces"]
+    end
+    GHA --> RES{"¿verde?"}
+    RES -->|"✅"| MERGE["PR mergeable"]
+    RES -->|"❌"| DEBUG["descargar trace<br/>diagnosticar SIN re-ejecutar"]
+```
+
+```mermaid
+flowchart TB
+    subgraph "Por qué CI cambia las reglas del juego"
+        L["En tu laptop:<br/>'a mí me pasa' 🤷"] --> C["En CI:<br/>ambiente limpio, reproducible,<br/>el MISMO para todo el equipo"]
+        C --> V["El verde de CI es LA señal<br/>de que se puede mergear<br/>(quality gate, M1)"]
+    end
+```
+
+## 📖 Concepto
+
+### CI: la suite que corre sin que nadie se acuerde
+
+**Continuous Integration** = cada cambio se integra y verifica automáticamente. Para un SDET, CI es donde tu trabajo cobra valor real: una suite que solo corre en tu laptop protege a UNA persona; en CI protege a todo el equipo, en cada cambio, para siempre. Conceptos que debes manejar con precisión:
+
+- **Workflow** (`.github/workflows/*.yml`): pipeline declarado en YAML. **Triggers** (`on:`): qué lo dispara — `push`, `pull_request`, `schedule` (cron), `workflow_dispatch` (botón manual).
+- **Job**: conjunto de steps en un runner (máquina limpia). Los jobs corren en paralelo salvo `needs:`.
+- **`npm ci` vs `npm install`**: `ci` instala EXACTAMENTE el `package-lock.json` y falla si no cuadra — builds reproducibles. En CI, siempre `npm ci`.
+- **Artifacts**: archivos que sobreviven al runner (reportes, traces). Sin artifacts, un fallo en CI es una caja negra.
+- **Secrets**: credenciales fuera del YAML (`${{ secrets.X }}`). Tokens en texto plano en un workflow = incidente de seguridad.
+
+### El SUT en CI: la decisión de arquitectura
+
+Tu suite necesita una Toolshop contra la cual correr. Opciones, con su trade-off:
+
+| Opción | Pro | Contra |
+|--------|-----|--------|
+| **Levantar el SUT en el runner (Docker)** ✅ hoy | Aislado, reproducible, sin dependencias externas | Minutos de arranque; el runner necesita recursos |
+| Apuntar a un ambiente desplegado (dev/staging) | Realista, prueba integración real | Compartido: data sucia, caídas ajenas = rojos falsos |
+| Instancia hospedada pública | Cero setup | Sin control: rate limits, data impredecible |
+
+En empresas reales coexisten: PR → SUT efímero; nightly → staging. Es exactamente la matriz de gates por ambiente de la aerolínea (`gate-dev`, `gate-uat`…) que diseñarás en C2-M6.
+
+### El contrato social del CI
+
+1. **Rojo se atiende ya** — una suite roja que se ignora entrena al equipo a ignorarla (y un false negative pasará caminando).
+2. **Verde debe ser confiable** — cada flaky erosiona la señal (C2-M6 ataca esto con datos).
+3. **Rápido o ignorado** — feedback >15 min en PR = devs que mergean sin esperar.
+
+## 🔨 Lab guiado — El pipeline del spine
+
+**Paso 0 — Sube el repo a GitHub** (si no lo has hecho): crea el repo `sdet-mastery` en tu cuenta y `git remote add origin ... && git push -u origin main`. Hacerlo público convierte todo tu progreso en portfolio.
+
+**Paso 1 — El workflow.** Crea `.github/workflows/tests.yml` en la RAÍZ del repo (GitHub Actions solo mira ahí):
+
+```yaml
+name: Toolshop test suite
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: labs/toolshop-tests
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Levantar Toolshop (SUT)
+        working-directory: .
+        run: |
+          git clone --depth 1 https://github.com/testsmith-io/practice-software-testing.git /tmp/sut
+          cd /tmp/sut && docker compose up -d
+          # esperar a que la API responda (máx ~3 min)
+          timeout 180 bash -c 'until curl -sf http://localhost:8091/status; do sleep 5; done'
+          docker compose exec -T laravel-api php artisan migrate:fresh --seed
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: labs/toolshop-tests/package-lock.json
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Correr la suite
+        run: npx playwright test
+        env:
+          TOOLSHOP_API: http://localhost:8091
+          TOOLSHOP_UI: http://localhost:4200
+
+      - name: Subir reporte y traces
+        if: always()                       # también (sobre todo) cuando falla
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: labs/toolshop-tests/playwright-report/
+          retention-days: 14
+```
+
+Detalles que importan (y que se preguntan): `timeout-minutes` evita runners colgados facturando; el health-check con `until curl` evita el clásico "los tests corrieron antes de que el SUT arrancara"; `if: always()` en los artifacts — el reporte importa MÁS cuando falla; el cache de npm ahorra minutos por run. Nota: si el endpoint `/status` no existe en la versión actual del SUT, usa cualquier GET barato (p. ej. `/brands`) como health-check.
+
+**Paso 2 — Push y observa.** `git push` y ve a la pestaña *Actions* del repo. Lee el log de cada step. Primer run: el arranque del SUT tardará unos minutos — anota la duración total (la optimizarás en C2-M6).
+
+**Paso 3 — Provoca un fallo y diagnostica SOLO con artifacts.** Rompe un locator, push, espera el rojo. Descarga el artifact `playwright-report`, ábrelo (`npx playwright show-report <carpeta>`) y navega hasta el trace del test fallido. **Diagnostica sin correr nada localmente** — esta habilidad es la diferencia entre "no sé, en CI falla" y un senior. Revierte y push del verde.
+
+**Paso 4 — El flujo de PR completo.** Crea una branch (`git switch -c feat/ci-badge`), agrega el badge del workflow al `README.md` del repo, abre un PR y observa el check correr ANTES del merge. En *Settings → Branches*, crea una branch protection rule para `main` que requiera el check verde: acabas de construir tu primer **quality gate** real.
+
+**Paso 5 — Commit/merge del PR** (`C1-M8: pipeline de CI con quality gate`).
+
+## 🎯 Reto
+
+El equipo pide dos mejoras y un análisis:
+
+1. **Smoke vs full:** etiqueta tus 3-4 tests más críticos con `@smoke` (tag de Playwright en el título o `tag:`) y modifica el workflow: en `pull_request` corre solo smoke (`--grep @smoke`); el push a `main` corre todo. Mide cuánto feedback time ahorraste en PR.
+2. **Nightly:** agrega un trigger `schedule` que corra la suite completa cada noche a las 2 a.m. UTC.
+3. **Análisis:** escribe en `docs/ci-notes.md` qué problema NUEVO introduce el modelo smoke-en-PR (pista: ¿qué pasa si un cambio rompe un test de regresión no-smoke y se mergea?) y cómo lo mitigarías. No hay respuesta única; hay trade-offs defendidos.
+
+## ✅ Checklist de dominio
+
+- [ ] Puedo escribir un workflow de GitHub Actions desde cero sin plantilla
+- [ ] Entiendo `npm ci` vs `npm install` y por qué CI exige el primero
+- [ ] Puedo diagnosticar un fallo de CI solo con artifacts (sin re-ejecutar local)
+- [ ] Sé levantar un SUT efímero en el runner y esperar su health-check
+- [ ] Configuré una branch protection rule y puedo explicar qué es un quality gate
+- [ ] Conozco los trade-offs entre SUT efímero, staging compartido y servicio hospedado
+
+## 💬 Preguntas de entrevista
+
+1. *"Walk me through your ideal CI pipeline for a test suite. What runs on PR vs nightly, and why?"*
+2. *"A test fails in CI but passes locally. Give me five hypotheses, ordered by likelihood."* (timing/recursos del runner, data del ambiente, paralelismo, versión de browser, variables de entorno)
+3. *"How do you keep PR feedback under 10 minutes as the suite grows?"* (smoke + sharding — profundizas en C2-M6)
+4. *"What's a quality gate? Who should be able to bypass it and when?"*
+5. *"Why `npm ci` instead of `npm install` in CI?"*
+
+## 🔗 Conexiones
+
+- **Refuerza:** el quality gate materializa la decisión de "¿podemos deployar?" del [M1](modulo-01-mentalidad-de-testing.md); los traces del [M5](modulo-05-ui-testing-playwright.md) ahora son tu única evidencia remota; los tags smoke salen de tu matriz de riesgo del M1.
+- **Se reutiliza en:** Checkpoint 1 exige PR con CI verde; C2-M6 industrializa esto (sharding, flakiness, gates por ambiente — la matriz `gate-dev`→`gate-uat` de la aerolínea); C2-M7 instrumenta estos runs con OpenTelemetry; C3-S2 mete evals de LLM en este mismo pipeline; el capstone 🏆 hace que el agente Healer abra PRs que pasan por ESTE gate — el framework manda, el agente sirve.
+</script>
+<script>
+mermaid.initialize({ startOnLoad: false, theme: 'dark',
+  themeVariables: { fontFamily: 'inherit', primaryColor: '#1b1f2a',
+    primaryBorderColor: '#5eead4', lineColor: '#818cf8', primaryTextColor: '#e7e9ee' } });
+
+marked.setOptions({ gfm: true, breaks: false });
+const raw = document.getElementById('src').textContent;
+
+// Render markdown, but extract mermaid fences first so marked doesn't escape them.
+const blocks = [];
+const pre = raw.replace(/```mermaid\n([\s\S]*?)```/g, (m, code) => {
+  blocks.push(code); return `\n@@MERMAID_${blocks.length - 1}@@\n`;
+});
+
+let htmlOut = marked.parse(pre);
+htmlOut = htmlOut.replace(/<p>@@MERMAID_(\d+)@@<\/p>/g,
+  (m, i) => `<div class="mermaid">${blocks[+i].replace(/</g,'&lt;')}</div>`);
+
+const el = document.getElementById('content');
+el.innerHTML = htmlOut;
+
+// syntax highlight non-mermaid code
+el.querySelectorAll('pre code').forEach(b => { try { hljs.highlightElement(b); } catch(e){} });
+mermaid.run({ querySelector: '.mermaid' });
+</script>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="es">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+
+<title>Módulo 4 — API testing primero · SDET Mastery</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --bg-soft: #161922;
+  --bg-card: #1b1f2a;
+  --border: #262b38;
+  --text: #e7e9ee;
+  --muted: #9aa3b2;
+  --accent: #5eead4;
+  --accent-2: #818cf8;
+  --warn: #fbbf24;
+  --code-bg: #11141c;
+  --max: 880px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 80% -10%, #1d2333 0%, var(--bg) 55%);
+  color: var(--text);
+  font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  backdrop-filter: blur(10px);
+  background: rgba(15,17,23,.72);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .inner {
+  max-width: var(--max); margin: 0 auto; padding: 12px 24px;
+  display: flex; align-items: center; gap: 14px; justify-content: space-between;
+}
+.topbar a.home { color: var(--muted); font-weight: 600; font-size: 14px; }
+.topbar .crumb { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #0b0d12; font-weight: 700; font-size: 12px; letter-spacing: .2px;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 40px 24px 120px; }
+
+article h1, article h2, article h3, article h4 { line-height: 1.25; }
+article h1 {
+  font-size: 2rem; margin: .2em 0 .6em;
+  background: linear-gradient(90deg, #fff, #b9c2d4);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+article h2 {
+  margin-top: 2.4em; padding-bottom: .35em; font-size: 1.45rem;
+  border-bottom: 1px solid var(--border);
+}
+article h3 { margin-top: 1.8em; font-size: 1.15rem; color: #f3f5f9; }
+article p { margin: .9em 0; }
+
+blockquote {
+  margin: 1.4em 0; padding: 14px 18px;
+  border-left: 4px solid var(--accent);
+  background: linear-gradient(90deg, rgba(94,234,212,.10), transparent);
+  border-radius: 0 10px 10px 0; color: #dfe4ee;
+}
+blockquote p { margin: .3em 0; }
+
+code {
+  font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+  font-size: .9em;
+}
+:not(pre) > code {
+  background: var(--code-bg); border: 1px solid var(--border);
+  padding: .12em .4em; border-radius: 6px; color: #f0b3a0;
+}
+pre {
+  background: var(--code-bg) !important; border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; overflow: auto; margin: 1.2em 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+pre code { background: none; border: 0; padding: 0; color: #e7e9ee; }
+
+table {
+  border-collapse: collapse; width: 100%; margin: 1.4em 0;
+  font-size: .94rem; overflow: hidden; border-radius: 10px;
+}
+th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+thead th { background: var(--bg-card); color: #fff; font-weight: 700; }
+tbody tr:nth-child(odd) { background: rgba(255,255,255,.015); }
+tbody tr:hover { background: rgba(129,140,248,.07); }
+
+ul, ol { padding-left: 1.4em; }
+li { margin: .35em 0; }
+
+/* Task lists */
+li:has(> input[type=checkbox]) { list-style: none; margin-left: -1.2em; }
+input[type=checkbox] { width: 16px; height: 16px; margin-right: 8px; accent-color: var(--accent); vertical-align: -2px; }
+li:has(> input[type=checkbox]:checked) { color: var(--muted); }
+
+.mermaid {
+  background: var(--bg-soft); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px; margin: 1.4em 0; text-align: center;
+  overflow-x: auto;
+}
+
+hr { border: 0; border-top: 1px solid var(--border); margin: 2.4em 0; }
+
+/* ---------- index ---------- */
+.hero { padding: 48px 0 10px; }
+.hero h1 { font-size: 2.6rem; margin: 0 0 .2em; }
+.hero p { color: var(--muted); font-size: 1.05rem; max-width: 620px; }
+.course { margin: 42px 0; }
+.course > h2 {
+  font-size: 1.05rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--muted); margin-bottom: 16px;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.card {
+  display: block; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 18px; transition: .18s ease;
+  position: relative; overflow: hidden;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--accent-2); text-decoration: none; box-shadow: 0 14px 34px rgba(0,0,0,.35); }
+.card .num { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
+.card .t { display: block; margin-top: 6px; color: #fff; font-weight: 600; line-height: 1.35; }
+.footer { color: var(--muted); font-size: 13px; text-align: center; margin-top: 60px; }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="home" href="index.html">← SDET Mastery</a>
+  <span class="crumb">Curso 1 · Fundamentos</span>
+</div></div>
+<div class="wrap">
+  <article id="content"></article>
+</div>
+<script type="text/markdown" id="src"># Módulo 4 — API testing primero
+
+> **Resultado:** 🌱 **nace el spine project** — una suite de API tests con Playwright + Zod que validará schemas, status codes y lógica de negocio de Toolshop. Esta suite crecerá durante TODO el programa.
+
+## 🗺️ Mapa visual
+
+```mermaid
+flowchart TB
+    subgraph "Anatomía de un buen API test"
+        A["ARRANGE<br/>preparar estado:<br/>data, auth, contexto"] --> AC["ACT<br/>UN request<br/>al endpoint bajo prueba"]
+        AC --> AS["ASSERT<br/>status + schema + negocio"]
+    end
+    subgraph "Las 3 capas del assert"
+        S1["1. Status code<br/>¿la API responde lo esperado?"]
+        S2["2. Schema (Zod)<br/>¿la FORMA del response es válida?<br/>tipos, campos requeridos"]
+        S3["3. Negocio<br/>¿los VALORES son correctos?<br/>el total suma, el filtro filtra"]
+    end
+    AS --> S1 --> S2 --> S3
+    style S2 fill:#1a7f5a,color:#fff
+```
+
+```mermaid
+flowchart LR
+    TSC["types.ts (M3)<br/>confianza ciega:<br/>'as Product'"] -- "Zod le pone<br/>verificación runtime" --> ZS["schemas.ts<br/>z.object({...})<br/>valida Y tipa"]
+    ZS --> T["tests/*.spec.ts"]
+```
+
+## 📖 Concepto
+
+### Por qué Playwright para API testing
+
+Playwright trae `APIRequestContext`: un cliente HTTP integrado al test runner. Ventaja estratégica sobre tener Postman/Jest aparte: **un solo runner, un solo reporte, una sola config** para API y UI — y en M6 los tests de UI usarán requests API para preparar data. Es la decisión del stack de la aerolínea ("API entre capas: Playwright APIRequest + Zod") y la práctica dominante en la industria.
+
+### El test runner: conceptos núcleo
+
+- `test('nombre', async ({ request }) => {...})` — cada test recibe **fixtures** (aquí `request`, un APIRequestContext limpio). Las fixtures son EL mecanismo de Playwright; en M6 crearás las tuyas.
+- `expect(valor).toBe(...)` / `expect(res).toBeOK()` — assertions.
+- Los tests **corren en paralelo por defecto** → cada test debe ser independiente (no asumir orden ni estado compartido). Esto te obliga desde el día 1 al hábito que salva suites enteras.
+
+### Zod: del tipo "decorativo" al contrato verificado
+
+En M3 escribiste `(await res.json()) as Product` — un **cast**: le juras al compilador que el JSON tiene esa forma, sin verificar nada. Si la API cambia `price` a string, tu test no se entera. Zod invierte eso: defines el schema una vez, y `schema.parse(json)` **valida en runtime Y deriva el tipo estático**:
+
+```typescript
+import { z } from 'zod';
+
+export const ProductSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.number().positive(),
+  is_rental: z.boolean(),
+});
+export type Product = z.infer<typeof ProductSchema>;   // el tipo sale DEL schema
+```
+
+Si la API rompe la forma, `parse()` lanza un error con el detalle exacto del campo que cambió. Acabas de construir un **detector de regresiones de contrato** — la semilla conceptual del contract testing formal (C2-M2).
+
+### AAA: la estructura de todo test
+
+**Arrange** (preparar), **Act** (UNA acción), **Assert** (verificar). Un test que hace login + busca + agrega al carrito + paga y "assertea" por el camino no es un test: son cuatro, y cuando falle no sabrás cuál. Regla práctica: si el nombre del test necesita la palabra "y", probablemente son dos tests.
+
+## 🔨 Lab guiado — La suite API del spine
+
+**Paso 1 — Instala Playwright sobre el proyecto del M3:**
+
+```bash
+cd ~/Documents/sdet-mastery/labs/toolshop-tests
+npm install -D @playwright/test zod
+npx playwright install chromium
+```
+
+**Paso 2 — Configura.** Crea `playwright.config.ts`:
+
+```typescript
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  use: {
+    baseURL: process.env.TOOLSHOP_API ?? 'http://localhost:8091',
+  },
+  reporter: [['html'], ['list']],
+});
+```
+
+**Paso 3 — Migra los tipos del M3 a schemas Zod.** Crea `src/schemas.ts` con `ProductSchema`, `PaginatedProductsSchema` y `LoginResponseSchema` (usa tus `types.ts` y `api-notes.md` como referencia; deriva los tipos con `z.infer`). Ejemplo del paginado:
+
+```typescript
+export const PaginatedProductsSchema = z.object({
+  current_page: z.number().int(),
+  data: z.array(ProductSchema),
+  total: z.number().int(),
+  per_page: z.number().int(),
+});
+```
+
+**Paso 4 — Primer test con las 3 capas de assert.** Crea `tests/api/products.spec.ts`:
+
+```typescript
+import { test, expect } from '@playwright/test';
+import { PaginatedProductsSchema } from '../../src/schemas.js';
+
+test.describe('GET /products', () => {
+  test('devuelve la primera página con schema válido', async ({ request }) => {
+    const res = await request.get('/products');                 // Act
+    expect(res.status()).toBe(200);                             // Assert 1: status
+    const body = PaginatedProductsSchema.parse(await res.json()); // Assert 2: schema
+    expect(body.data.length).toBeGreaterThan(0);                // Assert 3: negocio
+    expect(body.current_page).toBe(1);
+  });
+
+  test('filtra por rango de precio', async ({ request }) => {
+    const res = await request.get('/products?between=price,10,50');
+    expect(res.status()).toBe(200);
+    const body = PaginatedProductsSchema.parse(await res.json());
+    for (const p of body.data) {
+      expect(p.price).toBeGreaterThanOrEqual(10);   // ¿el filtro FILTRA?
+      expect(p.price).toBeLessThanOrEqual(50);
+    }
+  });
+
+  test('producto inexistente devuelve 404', async ({ request }) => {
+    const res = await request.get('/products/id-que-no-existe');
+    expect(res.status()).toBe(404);
+  });
+});
+```
+
+```bash
+npx playwright test
+npx playwright show-report   # mira el reporte HTML
+```
+
+**Paso 5 — Tests de auth (los casos del M2, ahora automatizados).** Crea `tests/api/auth.spec.ts` con cuatro tests: login válido devuelve token con schema correcto; login con password errónea devuelve 401; `GET /users/me` sin token devuelve 401; `GET /users/me` con token devuelve el perfil del customer. Para el último necesitas encadenar login → request autenticado:
+
+```typescript
+test('GET /users/me con token devuelve el perfil', async ({ request }) => {
+  const login = await request.post('/users/login', {
+    data: { email: 'customer@practicesoftwaretesting.com', password: 'welcome01' },
+  });
+  const { access_token } = LoginResponseSchema.parse(await login.json());   // Arrange
+  const res = await request.get('/users/me', {
+    headers: { Authorization: `Bearer ${access_token}` },                   // Act
+  });
+  expect(res.status()).toBe(200);                                           // Assert
+  expect((await res.json()).email).toBe('customer@practicesoftwaretesting.com');
+});
+```
+
+¿Notas que el login se repetirá en cada test autenticado? **Aguanta la incomodidad**: en M6 las fixtures eliminan esa duplicación. Sentir el dolor antes de conocer la cura es parte del diseño del curso.
+
+**Paso 6 — Rompe el contrato a propósito.** En `ProductSchema` cambia `price: z.number()` por `z.string()` y corre la suite. Lee con calma el error de Zod: te dice el path exacto del campo inválido. Eso verás el día que el backend rompa el contrato de verdad. Revierte el cambio.
+
+**Paso 7 — Commit** (`C1-M4: suite API con Playwright + Zod (nace el spine)`).
+
+## 🎯 Reto
+
+Automatiza el flujo de carrito que hiciste con curl en el M2, como suite `tests/api/cart.spec.ts`:
+
+1. `POST /carts` crea un carrito (assert: 201 y schema del response).
+2. Agregar un producto refleja la cantidad correcta al leer el carrito.
+3. Agregar el MISMO producto dos veces: ¿suma cantidades o duplica líneas? (descúbrelo y assertea el comportamiento real).
+4. Un `product_id` inexistente: ¿qué devuelve la API? ¿Es razonable? Si crees que es un bug, documéntalo en `docs/api-notes.md` (en M7 aprenderás a reportarlo formalmente).
+
+Restricciones: cada test independiente (crea SU propio carrito), schemas Zod para cada response nuevo, cero `as`.
+
+## ✅ Checklist de dominio
+
+- [ ] Puedo explicar las 3 capas de assert (status, schema, negocio) y qué bug detecta cada una
+- [ ] Entiendo la diferencia entre un cast de TS y una validación Zod en runtime
+- [ ] Escribo tests AAA con una sola acción bajo prueba
+- [ ] Mis tests corren en paralelo sin pisarse (independencia real)
+- [ ] Puedo leer un error de Zod y localizar el campo roto en segundos
+- [ ] Sé por qué probar la API antes que la UI (estabilidad, velocidad, contratos)
+
+## 💬 Preguntas de entrevista
+
+1. *"How do you validate an API response beyond the status code?"*
+2. *"Your API tests pass but the schema changed and broke a mobile client. How would you have caught it?"* (puente directo a contract testing, C2-M2)
+3. *"How do you keep API tests independent when they need shared state like a logged-in user?"*
+4. *"What's the AAA pattern and why does 'one act per test' matter for debugging?"*
+5. *"Where would you test that a price filter works: UI or API? Why?"*
+
+## 🔗 Conexiones
+
+- **Refuerza:** los endpoints y errores del [M2](modulo-02-caja-de-herramientas.md) ahora son tests ejecutables; los tipos del [M3](modulo-03-typescript-para-testers.md) evolucionaron a schemas con validación real; la estrategia "API primero" del [M1](modulo-01-mentalidad-de-testing.md) se materializó.
+- **Se reutiliza en:** M5 añade la capa UI sobre el mismo runner; M6 convierte el login repetido en fixture y usa estos requests para preparar data de tests UI; M8 corre esta suite en CI; C2-M2 formaliza los schemas como contratos Pact; C3-S3 expone esta suite como herramienta MCP para que un agente la ejecute.
+</script>
+<script>
+mermaid.initialize({ startOnLoad: false, theme: 'dark',
+  themeVariables: { fontFamily: 'inherit', primaryColor: '#1b1f2a',
+    primaryBorderColor: '#5eead4', lineColor: '#818cf8', primaryTextColor: '#e7e9ee' } });
+
+marked.setOptions({ gfm: true, breaks: false });
+const raw = document.getElementById('src').textContent;
+
+// Render markdown, but extract mermaid fences first so marked doesn't escape them.
+const blocks = [];
+const pre = raw.replace(/```mermaid\n([\s\S]*?)```/g, (m, code) => {
+  blocks.push(code); return `\n@@MERMAID_${blocks.length - 1}@@\n`;
+});
+
+let htmlOut = marked.parse(pre);
+htmlOut = htmlOut.replace(/<p>@@MERMAID_(\d+)@@<\/p>/g,
+  (m, i) => `<div class="mermaid">${blocks[+i].replace(/</g,'&lt;')}</div>`);
+
+const el = document.getElementById('content');
+el.innerHTML = htmlOut;
+
+// syntax highlight non-mermaid code
+el.querySelectorAll('pre code').forEach(b => { try { hljs.highlightElement(b); } catch(e){} });
+mermaid.run({ querySelector: '.mermaid' });
+</script>
+</body>
+</html>

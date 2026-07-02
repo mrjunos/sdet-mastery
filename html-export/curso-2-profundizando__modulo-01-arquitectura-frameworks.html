@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="es">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+
+<title>Módulo 1 — Arquitectura de frameworks · SDET Mastery</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --bg-soft: #161922;
+  --bg-card: #1b1f2a;
+  --border: #262b38;
+  --text: #e7e9ee;
+  --muted: #9aa3b2;
+  --accent: #5eead4;
+  --accent-2: #818cf8;
+  --warn: #fbbf24;
+  --code-bg: #11141c;
+  --max: 880px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 80% -10%, #1d2333 0%, var(--bg) 55%);
+  color: var(--text);
+  font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  backdrop-filter: blur(10px);
+  background: rgba(15,17,23,.72);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .inner {
+  max-width: var(--max); margin: 0 auto; padding: 12px 24px;
+  display: flex; align-items: center; gap: 14px; justify-content: space-between;
+}
+.topbar a.home { color: var(--muted); font-weight: 600; font-size: 14px; }
+.topbar .crumb { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #0b0d12; font-weight: 700; font-size: 12px; letter-spacing: .2px;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 40px 24px 120px; }
+
+article h1, article h2, article h3, article h4 { line-height: 1.25; }
+article h1 {
+  font-size: 2rem; margin: .2em 0 .6em;
+  background: linear-gradient(90deg, #fff, #b9c2d4);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+article h2 {
+  margin-top: 2.4em; padding-bottom: .35em; font-size: 1.45rem;
+  border-bottom: 1px solid var(--border);
+}
+article h3 { margin-top: 1.8em; font-size: 1.15rem; color: #f3f5f9; }
+article p { margin: .9em 0; }
+
+blockquote {
+  margin: 1.4em 0; padding: 14px 18px;
+  border-left: 4px solid var(--accent);
+  background: linear-gradient(90deg, rgba(94,234,212,.10), transparent);
+  border-radius: 0 10px 10px 0; color: #dfe4ee;
+}
+blockquote p { margin: .3em 0; }
+
+code {
+  font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+  font-size: .9em;
+}
+:not(pre) > code {
+  background: var(--code-bg); border: 1px solid var(--border);
+  padding: .12em .4em; border-radius: 6px; color: #f0b3a0;
+}
+pre {
+  background: var(--code-bg) !important; border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; overflow: auto; margin: 1.2em 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+pre code { background: none; border: 0; padding: 0; color: #e7e9ee; }
+
+table {
+  border-collapse: collapse; width: 100%; margin: 1.4em 0;
+  font-size: .94rem; overflow: hidden; border-radius: 10px;
+}
+th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+thead th { background: var(--bg-card); color: #fff; font-weight: 700; }
+tbody tr:nth-child(odd) { background: rgba(255,255,255,.015); }
+tbody tr:hover { background: rgba(129,140,248,.07); }
+
+ul, ol { padding-left: 1.4em; }
+li { margin: .35em 0; }
+
+/* Task lists */
+li:has(> input[type=checkbox]) { list-style: none; margin-left: -1.2em; }
+input[type=checkbox] { width: 16px; height: 16px; margin-right: 8px; accent-color: var(--accent); vertical-align: -2px; }
+li:has(> input[type=checkbox]:checked) { color: var(--muted); }
+
+.mermaid {
+  background: var(--bg-soft); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px; margin: 1.4em 0; text-align: center;
+  overflow-x: auto;
+}
+
+hr { border: 0; border-top: 1px solid var(--border); margin: 2.4em 0; }
+
+/* ---------- index ---------- */
+.hero { padding: 48px 0 10px; }
+.hero h1 { font-size: 2.6rem; margin: 0 0 .2em; }
+.hero p { color: var(--muted); font-size: 1.05rem; max-width: 620px; }
+.course { margin: 42px 0; }
+.course > h2 {
+  font-size: 1.05rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--muted); margin-bottom: 16px;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.card {
+  display: block; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 18px; transition: .18s ease;
+  position: relative; overflow: hidden;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--accent-2); text-decoration: none; box-shadow: 0 14px 34px rgba(0,0,0,.35); }
+.card .num { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
+.card .t { display: block; margin-top: 6px; color: #fff; font-weight: 600; line-height: 1.35; }
+.footer { color: var(--muted); font-size: 13px; text-align: center; margin-top: 60px; }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <a class="home" href="index.html">← SDET Mastery</a>
+  <span class="crumb">Curso 2 · Profundizando</span>
+</div></div>
+<div class="wrap">
+  <article id="content"></article>
+</div>
+<script type="text/markdown" id="src"># Módulo 1 — Arquitectura de frameworks
+
+> **Resultado:** el spine refactorizado a una arquitectura de paquetes con `framework-core`, config multi-ambiente, custom matchers y reglas de lint que protegen las convenciones — el eco directo del monorepo de la aerolínea.
+
+## 🗺️ Mapa visual
+
+```mermaid
+flowchart TB
+    subgraph Antes["ANTES: un proyecto plano"]
+        A1["toolshop-tests/<br/>pages + fixtures + src + tests<br/>todo junto, todo se importa de todo"]
+    end
+    subgraph Despues["DESPUÉS: capas con dependencias en una sola dirección"]
+        CORE["packages/framework-core<br/>base test, custom matchers,<br/>config por ambiente, helpers"]
+        TYPES["packages/shared-schemas<br/>schemas Zod + tipos derivados"]
+        UI["packages/ui-tests<br/>pages/ flows/ tests/"]
+        API["packages/api-tests<br/>client + specs"]
+        RULES["framework-rules<br/>ESLint custom: las convenciones<br/>dejan de ser opcionales"]
+        UI --> CORE
+        API --> CORE
+        UI --> TYPES
+        API --> TYPES
+        RULES -.->|"vigila a"| UI
+        RULES -.->|"vigila a"| API
+    end
+    Antes ==>|"refactor de hoy"| Despues
+```
+
+```mermaid
+flowchart LR
+    subgraph "Config multi-ambiente: una suite, N destinos"
+        ENV["TEST_ENV=local|hosted|staging"] --> CFG["config/environments.ts<br/>urls, credenciales(refs), timeouts"]
+        CFG --> PW["playwright.config.ts<br/>lee el ambiente UNA vez"]
+    end
+```
+
+## 📖 Concepto
+
+### Cuándo un framework necesita arquitectura (y cuándo no)
+
+Tu spine funciona. ¿Por qué tocarlo? Porque las fuerzas que rompen frameworks no son técnicas sino de escala: 3 SDETs → 20 devs escribiendo tests → 400 specs. Sin capas, cada quien importa lo que quiere, copia patrones a medias y en un año el framework es un pantano que nadie quiere tocar. La arquitectura existe para que **el camino correcto sea el camino fácil**. Pero ojo — la respuesta senior incluye el otro lado: para un proyecto de 30 tests y 2 personas, esta estructura es sobre-ingeniería. Sabrás justificar AMBAS decisiones.
+
+### Las piezas de un framework de escala
+
+**1. `framework-core`: la base compartida.** Todo lo que hoy está repetido o regado: la fixture base (`test` extendido), helpers de auth, lectura de config. Regla de dependencias en UNA dirección: los paquetes de tests dependen de core; core no conoce a nadie. Así un cambio en un page object jamás rompe el core.
+
+**2. Config multi-ambiente.** Tu suite hoy lee `TOOLSHOP_API` suelto. A escala necesitas ambientes nombrados (la aerolínea tiene 5: dev→prod) con TODO resuelto por nombre:
+
+```typescript
+// framework-core/src/environments.ts
+const ENVIRONMENTS = {
+  local:  { apiUrl: 'http://localhost:8091', uiUrl: 'http://localhost:4200' },
+  hosted: { apiUrl: 'https://api.practicesoftwaretesting.com', uiUrl: 'https://practicesoftwaretesting.com' },
+} as const;
+
+export function getEnv() {
+  const name = (process.env.TEST_ENV ?? 'local') as keyof typeof ENVIRONMENTS;
+  const env = ENVIRONMENTS[name];
+  if (!env) throw new Error(`Ambiente desconocido: ${name}. Válidos: ${Object.keys(ENVIRONMENTS).join(', ')}`);
+  return env;
+}
+```
+
+Las credenciales NUNCA viven aquí: viven en variables de entorno/secrets (M8 del C1); la config solo referencia sus nombres.
+
+**3. Custom matchers: el vocabulario de asserts del dominio.** En vez de repetir tres expects en cada test de API:
+
+```typescript
+// framework-core/src/matchers.ts
+import { expect as base } from '@playwright/test';
+import type { APIResponse } from '@playwright/test';
+import type { z } from 'zod';
+
+export const expect = base.extend({
+  async toMatchSchema(res: APIResponse, schema: z.ZodTypeAny) {
+    const body = await res.json();
+    const result = schema.safeParse(body);
+    return {
+      pass: result.success,
+      message: () => result.success
+        ? 'Response cumple el schema'
+        : `Schema violado:\n${JSON.stringify(result.error.issues, null, 2)}`,
+    };
+  },
+});
+// uso: await expect(res).toMatchSchema(ProductSchema)
+```
+
+**4. Reglas como código (la idea más importante del módulo).** Las convenciones que en C1 eran disciplina personal ("asserts en tests, no en pages") se convierten en **lint rules que fallan el build**. Eso es el `framework-rules` de la aerolínea, y la razón por la que su principio #1 es *"el framework manda, el agente sirve"*: una regla que una máquina verifica no depende de la memoria ni de la buena voluntad — ni de un humano apurado, ni de un LLM alucinando. **Estás construyendo hoy las barandillas que en el capstone contendrán a un agente.**
+
+## 🔨 Lab guiado — El gran refactor arquitectónico
+
+**Paso 1 — npm workspaces.** Reorganiza `labs/toolshop-tests/` (mueve con `git mv` para preservar historia):
+
+```
+labs/toolshop-tests/
+├── package.json                  # raíz: workspaces
+├── playwright.config.ts
+├── packages/
+│   ├── framework-core/src/{base-test.ts, environments.ts, matchers.ts}
+│   ├── shared-schemas/src/schemas.ts
+│   ├── api-tests/{src/api-client.ts, tests/}
+│   └── ui-tests/{pages/, flows/, tests/}
+└── docs/
+```
+
+En el `package.json` raíz: `"workspaces": ["packages/*"]`. Cada paquete tiene su `package.json` con nombre con scope (`@toolshop/framework-core`) y los tests importan `from '@toolshop/framework-core'` en vez de rutas relativas de tres niveles.
+
+**Paso 2 — `framework-core`.** Mueve fixtures → `base-test.ts` (exporta el `test` extendido y el `expect` con matchers), crea `environments.ts` (arriba) y haz que `playwright.config.ts` lea `getEnv()` UNA vez. Verifica: `TEST_ENV=hosted npx playwright test --project=api` corre contra la instancia pública sin tocar código.
+
+**Paso 3 — `flows/`: el nivel sobre los page objects.** La aerolínea separa `pages/` (una página) de `flows/` (viaje multi-página reutilizable). Crea `flows/purchase.flow.ts` que orquesta product→cart→checkout usando los page objects, y reescribe el E2E de checkout sobre el flow. Los flows tampoco assertean: orquestan.
+
+**Paso 4 — Custom matchers.** Implementa `toMatchSchema` y refactoriza 3 tests de API para usarlo. Escribe un segundo matcher tuyo: `toBeWithinRange(min, max)` para los tests del filtro de precios.
+
+**Paso 5 — Reglas como código.** Instala ESLint con `typescript-eslint` y configura en `eslint.config.js` reglas que protegen tus convenciones con `no-restricted-syntax` y `no-restricted-imports`:
+
+- ❌ `page.waitForTimeout` en cualquier lugar (`"selector": "CallExpression[callee.property.name='waitForTimeout']"`).
+- ❌ importar `@playwright/test` directamente en los specs (deben usar `@toolshop/framework-core` — así el matcher y las fixtures llegan siempre): regla `no-restricted-imports` aplicada solo a `packages/*/tests/**`.
+- ❌ `expect(` dentro de `pages/**` (asserts fuera de page objects).
+
+Corre `npx eslint .` y arregla lo que proteste. Agrega el lint como step del workflow de CI ANTES de los tests — las reglas ahora son un gate.
+
+**Paso 6 — Prueba la arquitectura.** El test definitivo de un refactor: agrega un test nuevo (cualquier endpoint no cubierto) y cuenta cuántos archivos tocaste. Debería ser UNO (el spec). Si tocaste más, la arquitectura tiene fricción — ajústala.
+
+**Paso 7 — Commit/PR** (`C2-M1: arquitectura de paquetes + config multi-ambiente + reglas como código`).
+
+## 🎯 Reto
+
+Un equipo nuevo quiere escribir tests de la API de admin de Toolshop (productos CRUD) usando tu framework. Simúlalo tú: crea `packages/admin-tests/` desde cero usando SOLO lo que el framework expone. Mientras lo haces, anota cada fricción que encuentres (¿faltó un helper de auth de admin en core? ¿la config no contemplaba roles?) y arregla el framework — no el paquete — para eliminarla. Entrega: el paquete nuevo + un `docs/framework-feedback.md` con las fricciones y cómo las resolviste. (Ese ciclo — usar tu propio framework como cliente y limarlo — es el trabajo real de un SDET senior de plataforma.)
+
+## ✅ Checklist de dominio
+
+- [ ] Puedo dibujar la arquitectura de mi framework y justificar cada capa y cada flecha de dependencia
+- [ ] Puedo explicar cuándo esta arquitectura es sobre-ingeniería
+- [ ] Sé configurar npm workspaces y paquetes con scope
+- [ ] Escribí un custom matcher y sé cuándo amerita crear uno
+- [ ] Convertí al menos 3 convenciones en lint rules que fallan el build
+- [ ] Mi suite corre contra dos ambientes cambiando UNA variable
+
+## 💬 Preguntas de entrevista
+
+1. *"Design a test framework for an org with 10 teams and 3 environments. Walk me through the architecture."* (LA pregunta de system design de SDET — el checkpoint del curso es exactamente esto)
+2. *"How do you enforce conventions in a test framework beyond code review?"*
+3. *"How do you handle environment-specific configuration and secrets?"*
+4. *"A team complains your framework is too rigid. How do you respond?"* (fricción como feedback, no como insulto — tu reto de hoy)
+5. *"What's the difference between a page object and a flow, and why separate them?"*
+
+## 🔗 Conexiones
+
+- **Refuerza:** la encapsulación de [C1-M6](../curso-1-fundamentos/modulo-06-patrones-de-tests.md) sube de altitud (de clases a paquetes); los schemas de [C1-M4](../curso-1-fundamentos/modulo-04-api-testing.md) ahora son un paquete compartido — el `shared-types` de la aerolínea; el CI de [C1-M8](../curso-1-fundamentos/modulo-08-ci-basico.md) gana su segundo gate (lint).
+- **Se reutiliza en:** TODOS los módulos siguientes extienden esta arquitectura (contracts en M2, doubles en M3, visual/a11y en M4, k6 en M5); las lint rules son la semilla de las barandillas del capstone 🏆 — donde un agente podrá tocar `pages/` pero el lint+CI le impedirá tocar asserts. El principio "el framework manda, el agente sirve" nace HOY.
+</script>
+<script>
+mermaid.initialize({ startOnLoad: false, theme: 'dark',
+  themeVariables: { fontFamily: 'inherit', primaryColor: '#1b1f2a',
+    primaryBorderColor: '#5eead4', lineColor: '#818cf8', primaryTextColor: '#e7e9ee' } });
+
+marked.setOptions({ gfm: true, breaks: false });
+const raw = document.getElementById('src').textContent;
+
+// Render markdown, but extract mermaid fences first so marked doesn't escape them.
+const blocks = [];
+const pre = raw.replace(/```mermaid\n([\s\S]*?)```/g, (m, code) => {
+  blocks.push(code); return `\n@@MERMAID_${blocks.length - 1}@@\n`;
+});
+
+let htmlOut = marked.parse(pre);
+htmlOut = htmlOut.replace(/<p>@@MERMAID_(\d+)@@<\/p>/g,
+  (m, i) => `<div class="mermaid">${blocks[+i].replace(/</g,'&lt;')}</div>`);
+
+const el = document.getElementById('content');
+el.innerHTML = htmlOut;
+
+// syntax highlight non-mermaid code
+el.querySelectorAll('pre code').forEach(b => { try { hljs.highlightElement(b); } catch(e){} });
+mermaid.run({ querySelector: '.mermaid' });
+</script>
+</body>
+</html>
