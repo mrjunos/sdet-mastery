@@ -183,7 +183,7 @@ Una Directora de QA para LATAM casi nunca hace un quiz de sintaxis — para eso 
 - **"AI Lead"** tiene dos caras y debes dominar ambas: testear sistemas **hechos con IA** (curso 3) y usar IA **como herramienta de QA** (tu capstone Healer). Muchos candidatos solo traen una.
 - **Comunicación ejecutiva**: ella reporta hacia arriba. Si le respondes con claridad de headline-primero, te imagina presentando ante su VP. Eso pesa tanto como lo técnico.
 
-**La aritmética de los 30 minutos:** ~5 min de apertura y contexto, ~18-20 min para 3-5 preguntas grandes, ~5 min para TUS preguntas. Traducción: cada respuesta tuya debe durar **60-90 segundos** e invitar a profundizar, no agotarlo todo. Y tus preguntas del final **son parte del examen** — llega con 3 preparadas (bloque E).
+**La aritmética de los 30 minutos:** ~5 min de apertura y contexto, ~18-20 min para 3-5 preguntas grandes, ~5 min para TUS preguntas. Traducción: cada respuesta tuya debe durar **60-90 segundos** e invitar a profundizar, no agotarlo todo. Y tus preguntas del final **son parte del examen** — llega con 3 preparadas (bloque F).
 
 ## 📖 Repaso condensado
 
@@ -517,7 +517,87 @@ La trampa: quien dice "nunca se me escapó nada" o culpa a otros, falla. Estruct
 - **El equipo**: tiempo de aprendizaje explícito en el roadmap (no hobby de viernes), sesiones internas donde quien pilotea algo lo enseña, y champions que multiplican.
 </details>
 
-### Bloque E — Tus preguntas para ella (los últimos 5 minutos son parte del examen)
+### Bloque E — Habilidades blandas y estrategia general (madera de líder)
+
+Aquí no hay respuestas "correctas" técnicas — hay patrones de pensamiento que ella reconoce como madera de líder. Adapta cada respuesta con TU historia.
+
+<details>
+<summary>23. "No estás de acuerdo con una decisión mía (o de la dirección). ¿Qué haces?"</summary>
+
+Mide si sabes discrepar sin ser ni sumiso ni conflictivo:
+
+- **Discrepo en privado, con datos y a tiempo** — antes de la decisión, no después en los pasillos. Mi trabajo es que decidas con el riesgo completo sobre la mesa.
+- Si la decisión se mantiene: **disagree and commit** — la ejecuto como si fuera mía, porque un lead que sabotea con tibieza lo que no votó destruye al equipo.
+- El matiz que muestra criterio: si el desacuerdo es sobre un **riesgo grave** (seguridad, datos, legal), lo dejo **por escrito** con el impacto estimado — no para cubrirme, sino porque documentar riesgo es parte del rol de calidad.
+- Y la humildad: varias veces la decisión con la que no estaba de acuerdo resultó correcta — el negocio ve variables que yo no veo.
+</details>
+
+<details>
+<summary>24. "El release sale mañana y tu recomendación es no salir. ¿Cómo lo comunicas?"</summary>
+
+- **QA no veta — informa riesgo para que el negocio decida**. Mi trabajo no es decir "no", es que quien decide lo haga con los ojos abiertos.
+- Formato: **riesgo en lenguaje de negocio** ("si sale así, X% de probabilidad de que los usuarios de Y no puedan pagar; costo estimado Z") + **opciones, no ultimátums**: salir completo aceptando el riesgo / salir sin la feature afectada (flag) / retrasar N días.
+- **Sin sorpresas**: si esto se sabe la víspera, el fallo fue mío — la señal de riesgo debe ser visible semanas antes (gates, dashboards, reportes semanales).
+- Y si el negocio decide salir: se documenta el riesgo aceptado, se monitorea de cerca (shift-right) y no hay "te lo dije" después — hay post-mortem blameless si algo pasa.
+</details>
+
+<details>
+<summary>25. "Todo es urgente y el equipo no alcanza. ¿Cómo priorizas?"</summary>
+
+- **Riesgo × impacto, explícito y visible**: la matriz de siempre, pero publicada — cuando la priorización es opaca, todo el mundo pelea; cuando es un criterio compartido, la conversación cambia de "hazme caso" a "discutamos el riesgo".
+- **Decir NO en voz alta**: lo que no se hace se declara (riesgos aceptados), no se deja morir en silencio. El backlog infinito con todo "en progreso" es el fracaso clásico del lead que no sabe elegir.
+- **Proteger la capacidad del equipo**: si la demanda supera la capacidad de forma crónica, el problema no se resuelve priorizando — se escala con datos (esto entra, esto no, esto necesita gente).
+- La frase: *"priorizar es decidir qué se rompe primero — prefiero elegirlo yo con datos a que lo elija el azar."*
+</details>
+
+<details>
+<summary>26. "Un senior del equipo se resiste al cambio (por ejemplo, a adoptar IA). ¿Qué haces?"</summary>
+
+- **Primero escucho la objeción real** — detrás de "esto no sirve" suele haber algo legítimo: miedo a volverse irrelevante, una mala experiencia previa, o un problema técnico real que yo no vi. Cada uno se trata distinto.
+- **Los escépticos técnicos son un activo**: los invito a romper el piloto — "ayúdame a encontrar dónde falla esto". Si tenía razón, el sistema mejora; si no, se convenció solo con evidencia que él mismo generó.
+- **Nunca imponer por jerarquía** lo que puedo ganar con datos y participación — la adopción forzada se sabotea sola en tres meses.
+- Límite claro: opinar distinto es sano; bloquear al equipo después de la decisión no. Si tras escuchar, involucrar y mostrar datos alguien sigue en bloqueo activo, esa ya es una conversación de desempeño, y no la evito.
+</details>
+
+<details>
+<summary>27. "¿Cómo construyes confianza con stakeholders no técnicos?"</summary>
+
+- **Hablar su idioma, no el mío**: nadie del negocio quiere oír "flake rate" — quiere oír riesgo, costo, velocidad. Traducir es mi trabajo, no el suyo.
+- **Previsibilidad**: reportes cortos y regulares con los mismos 3-5 números — la confianza se construye con cadencia, no con presentaciones heroicas.
+- **Sin sorpresas, especialmente malas**: la mala noticia se da temprano, con opciones. La primera vez que ocultas un rojo, la confianza no vuelve.
+- **Cumplir lo pequeño**: decir "esto estará el jueves" y que esté el jueves vale más que cualquier roadmap ambicioso.
+</details>
+
+<details>
+<summary>28. "Cuéntame un error tuyo como líder, o un feedback difícil que te dieron."</summary>
+
+Prepara TU historia real — la estructura que funciona:
+
+- **El error, concreto y sin excusas** (1 frase). Los errores creíbles de líder: retrasar una conversación difícil, hacer el trabajo yo mismo en vez de delegar, asumir contexto que el equipo no tenía, sobre-diseñar antes de validar.
+- **Qué cambió** — la parte que importa: el hábito o mecanismo concreto que instalaste para que no se repita (no "aprendí a comunicar mejor" — vago — sino "desde entonces hago X").
+- **Evidencia de que cambió**: una situación posterior donde actuaste distinto.
+- Lo que ella descarta al instante: "soy muy perfeccionista" (humblebrag), culpar al contexto, o no tener ningún error que contar — eso es falta de autoconciencia, no de errores.
+</details>
+
+<details>
+<summary>29. "¿Cómo tomas decisiones con información incompleta?"</summary>
+
+- **Clasifico la decisión primero**: ¿es **reversible** (puerta de dos vías) o **irreversible**? Las reversibles se toman rápido con el 70% de la información — el costo de esperar supera el costo de equivocarse; las irreversibles sí ameritan más análisis.
+- **Timebox a la investigación**: "decidimos el viernes con lo que tengamos" — la parálisis por análisis es una decisión también, y suele ser la peor.
+- **Decidir + instrumentar**: toda decisión bajo incertidumbre lleva su métrica de validación y su criterio de reversa — es la misma mentalidad de las evals: no sé si es correcto a priori, pero sé cómo lo voy a medir.
+- Es literalmente mi especialidad técnica convertida en hábito de gestión: trabajar con sistemas no-deterministas me entrenó para decidir sobre distribuciones, no certezas.
+</details>
+
+<details>
+<summary>30. "¿Cómo delegas y desarrollas a tu equipo?"</summary>
+
+- **Delego resultados, no tareas**: "necesitamos X medido por Y, tuyo el cómo" — con el nivel de detalle inversamente proporcional a la seniority de la persona.
+- **Autonomía gradual** — el mismo patrón que uso con agentes de IA, y lo digo así porque es verdad: primero superviso de cerca, y a medida que los resultados lo justifican, suelto. Micromanagement permanente y abandono son los dos extremos que fallan.
+- **El error es presupuesto de aprendizaje**: delegar implica aceptar que algo saldrá distinto a como yo lo haría — si intervengo cada vez, le enseño al equipo a no decidir.
+- **Desarrollo deliberado**: cada persona con un reto que le quede un poco grande + espacio para fallar con red (blameless). Mi métrica de éxito como lead: cuántas decisiones toma el equipo sin necesitarme.
+</details>
+
+### Bloque F — Tus preguntas para ella (los últimos 5 minutos son parte del examen)
 
 <details>
 <summary>Las 5 preguntas que puedes hacerle — y por qué funcionan</summary>
@@ -546,7 +626,7 @@ Elige 3 según cómo fluya la conversación:
 **Mañana (antes de la entrevista):**
 
 - [ ] Releer SOLO el banco de preguntas (respuestas cerradas, en voz alta)
-- [ ] Elegir tus 3 preguntas del bloque E
+- [ ] Elegir tus 3 preguntas del bloque F
 - [ ] Buscar a la Directora en LinkedIn: su trayectoria te dice qué valora (¿viene de automatización? ¿de gestión? ajusta el nivel técnico de tus respuestas)
 - [ ] Setup: cámara, micrófono, conexión, agua, cuaderno con 5 palabras clave visibles (riesgo · escalera · trayectoria · guardrails · ROI)
 - [ ] Respirar. Sabes esto — construiste un programa entero que lo demuestra.
