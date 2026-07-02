@@ -23,6 +23,7 @@ Requiere internet al ver (diagramas y resaltado se renderizan client-side vía C
 | **Curso 1 — Fundamentos** | Mentalidad de testing, HTTP, TypeScript, API + UI testing con Playwright, patrones, diseño de casos, CI básico | ~8 semanas |
 | **Curso 2 — Profundizando** | Arquitectura de frameworks, contract testing, test doubles, visual/a11y, performance con k6, CI/CD avanzado, observabilidad, estrategia y liderazgo | ~9 semanas |
 | **Curso 3 — Especializaciones** | Testing de sistemas con LLMs: RAG, LLM-as-a-judge, agentic flows & tool calling, red-teaming & guardrails, performance & observabilidad LLM. **Estudiables por separado.** | ~10 semanas (todas) |
+| **Curso 4 — Empresa AI-Native (CEO)** | Estrategia, no código: memoria organizacional como sistema operativo, sensores y métricas en lo no-determinista, constitución de decisiones y autonomía de agentes, riesgo/gente/cultura. Caso de estudio: **Cafetal**, startup de café de especialidad. Capstone: el blueprint fundacional. | ~5 semanas |
 
 Además hay un **módulo especial de preparación de entrevistas** (repaso condensado de toda la maestría + banco de preguntas con respuesta oculta), enlazado al inicio del índice.
 
@@ -76,10 +77,11 @@ Los labs funcionan con ambas vías; cada lab indica la URL base con una variable
 ```
 sdet-mastery/
 ├── README.md                    ← estás aquí
-├── html-export/                 ← TODO el contenido (30 módulos HTML + index)
+├── html-export/                 ← TODO el contenido (35 módulos HTML + index)
 └── labs/
     ├── toolshop-tests/          ← spine project (TypeScript + Playwright)
-    └── ai-evals/                ← labs del Curso 3 (Python + uv)
+    ├── ai-evals/                ← labs del Curso 3 (Python + uv)
+    └── cafetal/                 ← artefactos estratégicos del Curso 4 (markdown)
 ```
 
 ## Por dónde empezar
