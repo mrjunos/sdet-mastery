@@ -663,20 +663,38 @@
       var key = slug + '#c' + i;
       var on = !!checks[key];
       var item = el('div', 'sd-check-item' + (on ? ' is-done' : ''));
-      var main = '<span class="sd-check-box"><span class="sd-check-mark">' + (on ? '✓' : '') + '</span></span>' +
-        '<span class="sd-check-main"><span class="sd-check-text">' + md2html(it.text).replace(/^<p>|<\/p>\s*$/g, '') + '</span>';
-      item.innerHTML = main + '</span>';
-      if (it.note) {
-        var note = el('div', 'sd-check-note'); renderRich(it.note, note);
-        item.querySelector('.sd-check-main').appendChild(note);
-      }
-      item.addEventListener('click', function (e) {
-        if (e.target.closest('a')) return;
+
+      // fila: checkbox (marca) + texto + chevron (despliega la nota)
+      var row = el('div', 'sd-check-row');
+      var box = el('span', 'sd-check-box', '<span class="sd-check-mark">' + (on ? '✓' : '') + '</span>');
+      var main = el('span', 'sd-check-main',
+        '<span class="sd-check-text">' + md2html(it.text).replace(/^<p>|<\/p>\s*$/g, '') + '</span>');
+      var hasNote = !!(it.note || answers[key] != null);
+      var chev = el('span', 'sd-check-chev' + (hasNote ? ' has-note' : ''), '⌄');
+      chev.title = 'Ver / editar tu respuesta';
+      row.appendChild(box); row.appendChild(main); row.appendChild(chev);
+      item.appendChild(row);
+
+      // acordeón con la respuesta editable (baseline = nota escrita en el .md)
+      var noteWrap = el('div', 'sd-check-note-wrap'); noteWrap.style.display = 'none';
+      noteWrap.appendChild(answerBlock(key, it.note, 'Mi respuesta'));
+      item.appendChild(noteWrap);
+
+      // marcar/desmarcar SOLO desde el checkbox (no elimina nada más)
+      box.addEventListener('click', function (e) {
+        e.stopPropagation();
         checks[key] = !checks[key]; saveChecks();
         var nowOn = !!checks[key];
         item.classList.toggle('is-done', nowOn);
-        item.querySelector('.sd-check-mark').textContent = nowOn ? '✓' : '';
+        box.querySelector('.sd-check-mark').textContent = nowOn ? '✓' : '';
         updateProgress();
+      });
+      // desplegar el acordeón desde el resto de la fila
+      row.addEventListener('click', function (e) {
+        if (e.target.closest('.sd-check-box') || e.target.closest('a')) return;
+        var open = noteWrap.style.display === 'none';
+        noteWrap.style.display = open ? 'block' : 'none';
+        item.classList.toggle('is-open', open);
       });
       list.appendChild(item);
     });

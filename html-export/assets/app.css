@@ -286,18 +286,21 @@ a { color: inherit; text-decoration: none; }
 .sd-check-progress-fill { height: 100%; background: linear-gradient(90deg,#2dd4bf,#5eead4); border-radius: 4px; transition: width .35s ease; }
 .sd-check-meta { font-family: var(--mono); font-size: 12px; color: #8b93a3; margin-left: auto; flex: none; }
 .sd-checklist { display: flex; flex-direction: column; gap: 9px; }
-.sd-check-item { cursor: pointer; display: flex; gap: 14px; align-items: flex-start; padding: 15px 17px; border-radius: 13px; background: #141824; border: 1px solid var(--border-2); transition: .16s; }
+.sd-check-item { border-radius: 13px; background: #141824; border: 1px solid var(--border-2); transition: .16s; }
 .sd-check-item:hover { border-color: #2f3a44; }
 .sd-check-item.is-done { background: rgba(45,212,191,.06); border-color: rgba(45,212,191,.25); }
-.sd-check-box { flex: none; width: 22px; height: 22px; border-radius: 7px; border: 1.5px solid #39414f; background: transparent; display: grid; place-items: center; margin-top: 1px; transition: .16s; }
+.sd-check-row { display: flex; gap: 14px; align-items: flex-start; padding: 15px 17px; cursor: pointer; }
+.sd-check-box { flex: none; width: 22px; height: 22px; border-radius: 7px; border: 1.5px solid #39414f; background: transparent; display: grid; place-items: center; margin-top: 1px; cursor: pointer; transition: .16s; }
+.sd-check-box:hover { border-color: var(--accent-deep); }
 .sd-check-item.is-done .sd-check-box { border-color: var(--accent-deep); background: linear-gradient(135deg,#5eead4,#2dd4bf); }
 .sd-check-mark { font-size: 13px; color: #0b0d12; font-weight: 700; line-height: 1; }
-.sd-check-main { min-width: 0; }
+.sd-check-main { min-width: 0; flex: 1; }
 .sd-check-text { font-size: 15px; line-height: 1.55; color: #d7dce6; }
 .sd-check-item.is-done .sd-check-text { color: var(--muted); }
-.sd-check-note { margin: 8px 0 0; font-size: 14px; line-height: 1.6; color: #8b93a3; border-left: 2px solid #242a38; padding-left: 12px; }
-.sd-check-note p { margin: 0 0 6px; }
-.sd-check-note p:last-child { margin-bottom: 0; }
+.sd-check-chev { flex: none; font-size: 16px; color: var(--muted-3); margin-top: 1px; transition: transform .2s, color .16s; }
+.sd-check-chev.has-note { color: var(--accent); }
+.sd-check-item.is-open .sd-check-chev { transform: rotate(180deg); }
+.sd-check-note-wrap { padding: 2px 17px 15px 53px; }
 
 /* interview accordions */
 .sd-qa { display: flex; flex-direction: column; gap: 10px; }
