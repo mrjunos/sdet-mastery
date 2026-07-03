@@ -8,13 +8,23 @@ Programa de estudio completo para dominar todo lo que un **SDET / Test Automatio
 
 ## Cómo leer el contenido
 
-Todo el contenido vive como **HTML** en [`html-export/`](html-export/). Para estudiarlo:
+El sitio es una **SPA** (una sola app con vistas Programa / Módulo / Repaso) en [`html-export/`](html-export/). Para estudiarlo:
 
 ```bash
-open html-export/index.html   # macOS — abre el índice con los 30 módulos
+open html-export/index.html   # macOS — abre la app; navega con el hash (#/, #/modulo/<slug>, #/repaso)
 ```
 
-Requiere internet al ver (diagramas y resaltado se renderizan client-side vía CDN). Las fuentes `.md` originales quedaron en el historial de git (hasta `5ca3cb3`).
+Requiere internet al ver (fuentes, diagramas y resaltado se renderizan client-side vía CDN). El **progreso se guarda solo** en `localStorage` del navegador: los checklists que marques y las flashcards que domines persisten entre recargas (funciona tanto en `file://` como desplegado por https). El checklist arranca sembrado desde los `- [x]` que ya tenías escritos.
+
+### Editar / regenerar contenido
+
+Las fuentes editables ahora son Markdown, una por módulo, en [`content/`](content/). Tras editar cualquiera, regenera el bundle que carga la app:
+
+```bash
+python3 tools/build_content.py   # content/*.md + content/manifest.json → html-export/assets/content.js
+```
+
+`tools/extract_md.py` es el script one-off que restauró estas fuentes desde el HTML legado (referencia histórica).
 
 ## Los 3 cursos
 
@@ -77,7 +87,11 @@ Los labs funcionan con ambas vías; cada lab indica la URL base con una variable
 ```
 sdet-mastery/
 ├── README.md                    ← estás aquí
-├── html-export/                 ← TODO el contenido (35 módulos HTML + index)
+├── content/                     ← fuentes editables (35 módulos .md + manifest.json)
+├── html-export/                 ← la SPA
+│   ├── index.html               ← shell
+│   └── assets/                  ← app.css, app.js, content.js (generado)
+├── tools/                       ← build_content.py (+ extract_md.py one-off)
 └── labs/
     ├── toolshop-tests/          ← spine project (TypeScript + Playwright)
     ├── ai-evals/                ← labs del Curso 3 (Python + uv)

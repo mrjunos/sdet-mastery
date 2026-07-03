@@ -1,0 +1,244 @@
+{
+  "courses": [
+    {
+      "id": "especial",
+      "name": "🎤 Especial · Preparación de entrevistas",
+      "modules": [
+        {
+          "slug": "especial__entrevista-directora-qa-latam",
+          "num": "Módulo especial",
+          "title": "Entrevista: Directora de QA LATAM — repaso condensado + banco de preguntas (QA AI Lead)",
+          "crumb": "Módulo especial · Preparación de entrevista"
+        }
+      ]
+    },
+    {
+      "id": "curso-1-fundamentos",
+      "name": "Curso 1 · Fundamentos",
+      "modules": [
+        {
+          "slug": "curso-1-fundamentos__modulo-01-mentalidad-de-testing",
+          "num": "Módulo 1",
+          "title": "Módulo 1 — Mentalidad de testing",
+          "crumb": "Curso 1 · Fundamentos"
+        },
+        {
+          "slug": "curso-1-fundamentos__modulo-02-caja-de-herramientas",
+          "num": "Módulo 2",
+          "title": "Módulo 2 — Caja de herramientas técnica",
+          "crumb": "Curso 1 · Fundamentos"
+        },
+        {
+          "slug": "curso-1-fundamentos__modulo-03-typescript-para-testers",
+          "num": "Módulo 3",
+          "title": "Módulo 3 — TypeScript para testers",
+          "crumb": "Curso 1 · Fundamentos"
+        },
+        {
+          "slug": "curso-1-fundamentos__modulo-04-api-testing",
+          "num": "Módulo 4",
+          "title": "Módulo 4 — API testing primero",
+          "crumb": "Curso 1 · Fundamentos"
+        },
+        {
+          "slug": "curso-1-fundamentos__modulo-05-ui-testing-playwright",
+          "num": "Módulo 5",
+          "title": "Módulo 5 — UI testing con Playwright",
+          "crumb": "Curso 1 · Fundamentos"
+        },
+        {
+          "slug": "curso-1-fundamentos__modulo-06-patrones-de-tests",
+          "num": "Módulo 6",
+          "title": "Módulo 6 — Patrones de diseño de tests",
+          "crumb": "Curso 1 · Fundamentos"
+        },
+        {
+          "slug": "curso-1-fundamentos__modulo-07-diseno-de-casos",
+          "num": "Módulo 7",
+          "title": "Módulo 7 — Diseño de casos y testing exploratorio",
+          "crumb": "Curso 1 · Fundamentos"
+        },
+        {
+          "slug": "curso-1-fundamentos__modulo-08-ci-basico",
+          "num": "Módulo 8",
+          "title": "Módulo 8 — CI básico",
+          "crumb": "Curso 1 · Fundamentos"
+        }
+      ]
+    },
+    {
+      "id": "curso-2-profundizando",
+      "name": "Curso 2 · Profundizando",
+      "modules": [
+        {
+          "slug": "curso-2-profundizando__modulo-01-arquitectura-frameworks",
+          "num": "Módulo 1",
+          "title": "Módulo 1 — Arquitectura de frameworks",
+          "crumb": "Curso 2 · Profundizando"
+        },
+        {
+          "slug": "curso-2-profundizando__modulo-02-contract-testing",
+          "num": "Módulo 2",
+          "title": "Módulo 2 — Contract testing",
+          "crumb": "Curso 2 · Profundizando"
+        },
+        {
+          "slug": "curso-2-profundizando__modulo-03-test-doubles",
+          "num": "Módulo 3",
+          "title": "Módulo 3 — Test doubles e integración",
+          "crumb": "Curso 2 · Profundizando"
+        },
+        {
+          "slug": "curso-2-profundizando__modulo-04-visual-a11y",
+          "num": "Módulo 4",
+          "title": "Módulo 4 — Visual regression + accesibilidad",
+          "crumb": "Curso 2 · Profundizando"
+        },
+        {
+          "slug": "curso-2-profundizando__modulo-05-performance-k6",
+          "num": "Módulo 5",
+          "title": "Módulo 5 — Performance testing con k6",
+          "crumb": "Curso 2 · Profundizando"
+        },
+        {
+          "slug": "curso-2-profundizando__modulo-06-cicd-avanzado",
+          "num": "Módulo 6",
+          "title": "Módulo 6 — CI/CD avanzado",
+          "crumb": "Curso 2 · Profundizando"
+        },
+        {
+          "slug": "curso-2-profundizando__modulo-07-observabilidad",
+          "num": "Módulo 7",
+          "title": "Módulo 7 — Observabilidad para SDETs",
+          "crumb": "Curso 2 · Profundizando"
+        },
+        {
+          "slug": "curso-2-profundizando__modulo-08-estrategia-liderazgo",
+          "num": "Módulo 8",
+          "title": "Módulo 8 — Estrategia y liderazgo",
+          "crumb": "Curso 2 · Profundizando"
+        }
+      ]
+    },
+    {
+      "id": "curso-3-especializaciones",
+      "name": "Curso 3 · Especializaciones (LLM)",
+      "modules": [
+        {
+          "slug": "curso-3-especializaciones__spec-00-fundamentos-llm__modulo-01-llm-y-api",
+          "num": "Módulo 1 · S00",
+          "title": "Spec 00 · Módulo 1 — El modelo y la API",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-00-fundamentos-llm__modulo-02-structured-output-no-determinismo",
+          "num": "Módulo 2 · S00",
+          "title": "Spec 00 · Módulo 2 — Structured output, tool use y el experimento del no-determinismo",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-01-rag-y-contexto__modulo-01-construir-rag",
+          "num": "Módulo 1 · S01",
+          "title": "Spec 01 · Módulo 1 — Construir el RAG (para poder romperlo)",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-01-rag-y-contexto__modulo-02-evaluar-rag",
+          "num": "Módulo 2 · S01",
+          "title": "Spec 01 · Módulo 2 — Evaluar el RAG con RAGAS",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-02-llm-as-a-judge__modulo-01-escalera-de-evals",
+          "num": "Módulo 1 · S02",
+          "title": "Spec 02 · Módulo 1 — La escalera de evals + promptfoo",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-02-llm-as-a-judge__modulo-02-juez-y-ci",
+          "num": "Módulo 2 · S02",
+          "title": "Spec 02 · Módulo 2 — El juez bajo juicio + evals en CI",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-03-agentic-flows__modulo-01-anatomia-agente",
+          "num": "Módulo 1 · S03",
+          "title": "Spec 03 · Módulo 1 — Anatomía de un agente",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-03-agentic-flows__modulo-02-agente-qa",
+          "num": "Módulo 2 · S03",
+          "title": "Spec 03 · Módulo 2 — El agente QA: tu framework como herramienta",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-03-agentic-flows__modulo-03-trajectory-evals",
+          "num": "Módulo 3 · S03",
+          "title": "Spec 03 · Módulo 3 — Trajectory evals",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-04-red-teaming-guardrails__modulo-01-superficie-de-ataque",
+          "num": "Módulo 1 · S04",
+          "title": "Spec 04 · Módulo 1 — La superficie de ataque + red-teaming automatizado",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-04-red-teaming-guardrails__modulo-02-guardrails",
+          "num": "Módulo 2 · S04",
+          "title": "Spec 04 · Módulo 2 — Guardrails en capas",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-05-performance-observability-llm__modulo-01-performance-llm",
+          "num": "Módulo 1 · S05",
+          "title": "Spec 05 · Módulo 1 — Performance de LLMs",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        },
+        {
+          "slug": "curso-3-especializaciones__spec-05-performance-observability-llm__modulo-02-observabilidad-langfuse",
+          "num": "Módulo 2 · S05",
+          "title": "Spec 05 · Módulo 2 — Observabilidad con Langfuse + evals en producción",
+          "crumb": "Curso 3 · Especializaciones (LLM)"
+        }
+      ]
+    },
+    {
+      "id": "curso-4-ai-native",
+      "name": "Curso 4 · Empresa AI-Native (estrategia para CEOs)",
+      "modules": [
+        {
+          "slug": "curso-4-ai-native__modulo-01-empresa-como-sistema",
+          "num": "Módulo 1",
+          "title": "Módulo 1 — La empresa como sistema: AI-native de verdad + la memoria como sistema operativo",
+          "crumb": "Curso 4 · Empresa AI-Native (CEO)"
+        },
+        {
+          "slug": "curso-4-ai-native__modulo-02-sensores-y-metricas",
+          "num": "Módulo 2",
+          "title": "Módulo 2 — Sensores y métricas: medir cuando el mundo no es determinista",
+          "crumb": "Curso 4 · Empresa AI-Native (CEO)"
+        },
+        {
+          "slug": "curso-4-ai-native__modulo-03-decisiones-y-autonomia",
+          "num": "Módulo 3",
+          "title": "Módulo 3 — Decisiones y autonomía: la constitución de la empresa",
+          "crumb": "Curso 4 · Empresa AI-Native (CEO)"
+        },
+        {
+          "slug": "curso-4-ai-native__modulo-04-riesgo-gente-cultura",
+          "num": "Módulo 4",
+          "title": "Módulo 4 — Riesgo, gente y cultura: la parte que no se automatiza",
+          "crumb": "Curso 4 · Empresa AI-Native (CEO)"
+        },
+        {
+          "slug": "curso-4-ai-native__capstone-blueprint-cafetal",
+          "num": "🏆 Capstone",
+          "title": "Capstone — El blueprint fundacional de Cafetal",
+          "crumb": "Curso 4 · Empresa AI-Native (CEO)"
+        }
+      ]
+    }
+  ]
+}
