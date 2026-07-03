@@ -480,6 +480,18 @@
   function stripNum(title) {
     return title.replace(/^Módulo\s+\d+\s+—\s+/, '').replace(/^Spec\s+\d+\s+·\s+Módulo\s+\d+\s+—\s+/, '');
   }
+  // orden global de módulos (aplanado desde los cursos) para navegación "siguiente"
+  var _flat = null;
+  function flatSlugs() {
+    if (_flat) return _flat;
+    _flat = [];
+    COURSES.forEach(function (c) { c.modules.forEach(function (m) { _flat.push(m.slug); }); });
+    return _flat;
+  }
+  function nextSlugOf(slug) {
+    var order = flatSlugs(), i = order.indexOf(slug);
+    return (i > -1 && i < order.length - 1) ? order[i + 1] : null;
+  }
 
   /* -------------------------------------------------------------- MODULE   */
   function renderModule(slug) {
@@ -536,7 +548,15 @@
     // footer nav
     var foot = el('div', 'sd-modfoot');
     var fb = el('a', 'sd-modfoot-back', '← Volver al programa'); fb.href = '#/';
-    var fc = el('a', 'sd-modfoot-cta', 'Repasar el banco de preguntas →'); fc.href = '#/repaso';
+    var nextSlug = nextSlugOf(slug);
+    var fc;
+    if (nextSlug) {
+      fc = el('a', 'sd-modfoot-cta', 'Siguiente módulo: ' + esc(stripNum(MODULES[nextSlug].title)) + ' →');
+      fc.href = '#/modulo/' + nextSlug;
+    } else {
+      fc = el('a', 'sd-modfoot-cta', 'Repasar el banco de preguntas →');
+      fc.href = '#/repaso';
+    }
     foot.appendChild(fb); foot.appendChild(fc);
     article.appendChild(foot);
 
