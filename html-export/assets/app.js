@@ -23,8 +23,19 @@
   var checks = LS.read('sdet:checks', {});   // { "slug#c0": true }
   var marks = LS.read('sdet:marks', {});     // { "slug#q0": "known"|"review" }
   var seeded = LS.read('sdet:seeded', {});   // { slug: true }
+  var answers = LS.read('sdet:answers', {}); // { "slug#q0": "markdown override" }
   function saveChecks() { LS.write('sdet:checks', checks); }
   function saveMarks() { LS.write('sdet:marks', marks); }
+  function saveAnswers() { LS.write('sdet:answers', answers); }
+
+  var DEFAULT_NAME = 'Mauro J.';
+  function getName() { try { return localStorage.getItem('sdet:name') || DEFAULT_NAME; } catch (e) { return DEFAULT_NAME; } }
+  function setName(v) { try { localStorage.setItem('sdet:name', v); } catch (e) {} }
+  function initials(name) {
+    var p = String(name).trim().split(/\s+/);
+    return (((p[0] || '')[0] || '') + ((p[1] || '')[0] || '')).toUpperCase() || 'S';
+  }
+  function answerFor(id, baseline) { return (answers[id] != null) ? answers[id] : baseline; }
 
   /* -------------------------------------------------------------- helpers */
   function el(tag, cls, html) {
@@ -306,10 +317,31 @@
     var a2 = el('a', 'sd-navlink' + (active === 'review' ? ' is-active' : ''), 'Repaso');
     a2.href = '#/repaso';
     var pct = overallPct();
-    var user = el('span', 'sd-nav-user',
-      '<span class="sd-nav-user-txt"><span class="sd-nav-name">Mauro J.</span>' +
-      '<span class="sd-nav-level">Nivel Senior · ' + pct + '%</span></span>' +
-      '<span class="sd-avatar">MJ</span>');
+    var name = getName();
+    var user = el('span', 'sd-nav-user');
+    var txt = el('span', 'sd-nav-user-txt');
+    var nameEl = el('span', 'sd-nav-name');
+    nameEl.textContent = name; nameEl.title = 'Clic para editar tu nombre'; nameEl.style.cursor = 'pointer';
+    var lvl = el('span', 'sd-nav-level', 'Nivel Senior · ' + pct + '%');
+    txt.appendChild(nameEl); txt.appendChild(lvl);
+    var avatar = el('span', 'sd-avatar', esc(initials(name)));
+    user.appendChild(txt); user.appendChild(avatar);
+    nameEl.addEventListener('click', function () {
+      var inp = el('input', 'sd-name-input'); inp.value = getName();
+      nameEl.replaceWith(inp); inp.focus(); inp.select();
+      var committed = false;
+      function commit() {
+        if (committed) return; committed = true;
+        var v = inp.value.trim() || DEFAULT_NAME;
+        setName(v); nameEl.textContent = v; avatar.textContent = initials(v);
+        inp.replaceWith(nameEl);
+      }
+      inp.addEventListener('blur', commit);
+      inp.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+        if (e.key === 'Escape') { inp.value = getName(); inp.blur(); }
+      });
+    });
     links.appendChild(a1); links.appendChild(a2);
     links.appendChild(el('span', 'sd-nav-sep')); links.appendChild(user);
     inner.appendChild(logo); inner.appendChild(links);
@@ -551,6 +583,45 @@
     };
   }
 
+  // Bloque de respuesta editable (override en localStorage, no toca los .md)
+  function answerBlock(id, baseline, label) {
+    var wrap = el('div', 'sd-answer');
+    function view() {
+      wrap.innerHTML = '';
+      var head = el('div', 'sd-answer-head');
+      head.appendChild(el('span', 'sd-qa-answer-label', label || 'Tu respuesta'));
+      if (answers[id] != null) head.appendChild(el('span', 'sd-answer-edited', 'editado'));
+      var btn = el('button', 'sd-answer-edit', '✎ Editar');
+      head.appendChild(btn); wrap.appendChild(head);
+      var body = el('div', 'sd-answer-view sd-md');
+      var md = answerFor(id, baseline);
+      renderRich(md && md.trim() ? md : '_Sin respuesta escrita todavía. Clic en Editar._', body);
+      wrap.appendChild(body);
+      btn.addEventListener('click', edit);
+    }
+    function edit() {
+      wrap.innerHTML = '';
+      var ta = el('textarea', 'sd-answer-input');
+      ta.value = answerFor(id, baseline) || ''; ta.rows = 7;
+      ta.setAttribute('spellcheck', 'false');
+      wrap.appendChild(ta);
+      var act = el('div', 'sd-answer-actions');
+      var save = el('button', 'sd-answer-btn sd-answer-save', 'Guardar');
+      var cancel = el('button', 'sd-answer-btn', 'Cancelar');
+      var reset = el('button', 'sd-answer-btn sd-answer-reset', 'Restaurar original');
+      act.appendChild(save); act.appendChild(cancel);
+      if (answers[id] != null) act.appendChild(reset);
+      wrap.appendChild(act);
+      act.appendChild(el('span', 'sd-answer-hint', 'Se guarda solo en este navegador (Markdown permitido).'));
+      ta.focus();
+      save.addEventListener('click', function () { answers[id] = ta.value; saveAnswers(); view(); });
+      cancel.addEventListener('click', view);
+      reset.addEventListener('click', function () { delete answers[id]; saveAnswers(); view(); });
+    }
+    view();
+    return wrap;
+  }
+
   function renderSection(s, slug, accent) {
     var sec = el('section', 'sd-section'); sec.id = s.id;
     var head = el('div', 'sd-section-head');
@@ -564,7 +635,7 @@
     if (s.type === 'checklist') sec.appendChild(renderChecklist(s, slug));
     else if (s.type === 'interview') {
       var iv = parseInterview(s.body);
-      if (iv) sec.appendChild(renderInterview(iv, head));
+      if (iv) sec.appendChild(renderInterview(iv, slug));
       else { var b = el('div', 'sd-section-body sd-md'); renderRich(s.body, b); sec.appendChild(b); }
     } else {
       var body = el('div', 'sd-section-body sd-md');
@@ -622,7 +693,7 @@
     return box;
   }
 
-  function renderInterview(iv, headEl) {
+  function renderInterview(iv, slug) {
     var box = el('div', 'sd-section-body');
     if (iv.preamble) { var pm = el('div', 'sd-md'); renderRich(iv.preamble, pm); box.appendChild(pm); }
     var qa = el('div', 'sd-qa');
@@ -634,9 +705,8 @@
       var body = el('div', 'sd-qa-body');
       body.style.display = 'none';
       var inner = el('div', 'sd-qa-body-inner');
-      inner.appendChild(el('span', 'sd-qa-answer-label', 'Tu respuesta'));
-      var ans = el('div'); renderRich(it.a || '_Sin respuesta escrita todavía._', ans);
-      inner.appendChild(ans); body.appendChild(inner);
+      inner.appendChild(answerBlock(slug + '#q' + i, it.a, 'Tu respuesta'));
+      body.appendChild(inner);
       head.addEventListener('click', function () {
         var open = item.classList.toggle('is-open');
         body.style.display = open ? 'block' : 'none';
@@ -733,9 +803,8 @@
     var foot = el('div', 'sd-card-foot');
     if (review.revealed) {
       var ans = el('div', 'sd-card-answer');
-      ans.appendChild(el('span', 'sd-card-answer-label', 'Tu respuesta'));
-      var ab = el('div', 'sd-card-answer-body'); renderRich(card.a || '_Sin respuesta escrita todavía._', ab);
-      ans.appendChild(ab); foot.appendChild(ans);
+      ans.appendChild(answerBlock(card.id, card.a, 'Tu respuesta'));
+      foot.appendChild(ans);
     } else {
       var rvb = el('button', 'sd-reveal-btn', 'Revelar respuesta');
       rvb.addEventListener('click', function () { review.revealed = true; rerenderReview(); });
