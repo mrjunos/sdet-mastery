@@ -9,6 +9,18 @@
           "num": "Módulo especial",
           "title": "Entrevista: Directora de QA LATAM — repaso condensado + banco de preguntas (QA AI Lead)",
           "crumb": "Módulo especial · Preparación de entrevista"
+        },
+        {
+          "slug": "especial__proyecto-harness-repaso",
+          "num": "Proyecto",
+          "title": "Proyecto: llm-eval-harness — aplicación de spec-01/02/04 (repasar al terminarlos)",
+          "crumb": "Módulo especial · Proyecto de portafolio"
+        },
+        {
+          "slug": "especial__harness-defensa-entrevista",
+          "num": "Proyecto",
+          "title": "Defender el harness en entrevista — pitch, preguntas trampa y la limitación a confesar",
+          "crumb": "Módulo especial · Proyecto de portafolio"
         }
       ]
     },

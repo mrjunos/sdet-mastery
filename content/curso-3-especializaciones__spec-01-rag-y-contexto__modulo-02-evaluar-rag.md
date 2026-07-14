@@ -123,3 +123,4 @@ df.to_csv("spec01/evals/resultados.csv")
 
 - **Refuerza:** el RAG del [módulo 1](modulo-01-construir-rag.md) (exponer chunks fue lo que hizo posible evaluar); el golden dataset de [spec-00-M2](../spec-00-fundamentos-llm/modulo-02-structured-output-no-determinismo.md) sube de nivel; el ciclo diagnóstico→fix→re-medición es el mismo de la flakiness ([C2-M6](../../curso-2-profundizando/modulo-06-cicd-avanzado.md)).
 - **Se reutiliza en:** spec-02 abre la caja del LLM-juez que RAGAS usó hoy y mete estos evals en CI; spec-05 añade la dimensión que faltó (¿cuánto TARDA y CUESTA cada pregunta del RAG?); el patrón "métrica por componente del pipeline" reaparece en spec-03 para agentes (¿falló el plan, la tool o la síntesis?).
+- **🔧 Aplícalo:** estas métricas ya están construidas y medidas en tu proyecto real → [Proyecto: llm-eval-harness](especial__proyecto-harness-repaso.md) (recall@3=1.00, precision=0.58 con el hallazgo del chunking). Repásalo al terminar el spec.
